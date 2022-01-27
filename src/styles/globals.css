@@ -41,7 +41,11 @@
       U+2215, U+FEFF, U+FFFD;
   }
 
-  .cursor-newtab {
+  body {
+    @apply bg-[#06202A] text-gray-300;
+  }
+
+  text-gray-300 {
     cursor: url('/images/new-tab.png') 10 10, pointer;
   }
 

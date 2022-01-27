@@ -1,30 +1,27 @@
-import * as React from 'react';
+import {
+  BadgeCheckIcon,
+  CollectionIcon,
+  HomeIcon,
+  LightningBoltIcon,
+  SearchIcon,
+  UserIcon,
+} from '@heroicons/react/outline';
 
-import UnstyledLink from '@/components/links/UnstyledLink';
-
-const links = [
-  { href: '/', label: 'Route 1' },
-  { href: '/', label: 'Route 2' },
-];
+import HeaderItem from './HeaderItem';
 
 export default function Header() {
   return (
-    <header className='sticky top-0 z-50 bg-white'>
-      <div className='layout flex h-14 items-center justify-between'>
-        <UnstyledLink href='/' className='font-bold hover:text-gray-600'>
-          Home
-        </UnstyledLink>
-        <nav>
-          <ul className='flex items-center justify-between space-x-4'>
-            {links.map(({ href, label }) => (
-              <li key={`${href}${label}`}>
-                <UnstyledLink href={href} className='hover:text-gray-600'>
-                  {label}
-                </UnstyledLink>
-              </li>
-            ))}
-          </ul>
-        </nav>
+    <header className='m-5 flex h-auto flex-col items-center justify-between sm:flex-row'>
+      <div className='flex max-w-2xl flex-grow justify-evenly'>
+        <HeaderItem title='HOME' Icon={HomeIcon} />
+        <HeaderItem title='TRENDING' Icon={LightningBoltIcon} />
+        <HeaderItem title='VERIFIED' Icon={BadgeCheckIcon} />
+        <HeaderItem title='COLLECTIONS' Icon={CollectionIcon} />
+        <HeaderItem title='SEARCH' Icon={SearchIcon} />
+        <HeaderItem title='ACCOUNT' Icon={UserIcon} />
+      </div>
+      <div className='flex items-center'>
+        <h1 className='text-gray-300'>TheList</h1>
       </div>
     </header>
   );

@@ -50,7 +50,11 @@ module.exports = {
       animation: {
         flicker: 'flicker 3s linear infinite',
       },
+      screens:{
+        '3xl':"2000px"
+      }
+
     },
   },
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [require('@tailwindcss/forms'), require('tailwind-scrollbar-hide')],
 };
