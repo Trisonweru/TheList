@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CacheProvider } from '@emotion/react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
+import { SessionProvider } from 'next-auth/react';
 import PropTypes from 'prop-types';
 
+import { ModalProvider } from '../context/ModalContext';
 import { darkTheme } from '../styles/theme/lightTheme';
 import createEmotionCache from '../../utils/createEmotionCache';
 
@@ -13,17 +16,26 @@ import '@/styles/colors.css';
 import Layout from '@/components/layout/Layout';
 
 const MyApp = (props: any) => {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  const {
+    Component,
+    emotionCache = clientSideEmotionCache,
+    pageProps,
+    session,
+  } = props;
 
   return (
-    <CacheProvider value={emotionCache}>
-      <ThemeProvider theme={darkTheme}>
-        <CssBaseline />
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </ThemeProvider>
-    </CacheProvider>
+    <SessionProvider session={session}>
+      <CacheProvider value={emotionCache}>
+        <ModalProvider>
+          <ThemeProvider theme={darkTheme}>
+            <CssBaseline />
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </ThemeProvider>
+        </ModalProvider>
+      </CacheProvider>
+    </SessionProvider>
   );
 };
 

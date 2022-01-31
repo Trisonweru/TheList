@@ -8,7 +8,11 @@ module.exports = {
 
   // Uncoment to add domain whitelist
   images: {
-    domains: ['res.cloudinary.com', 'image.tmdb.org'],
+    domains: [
+      'res.cloudinary.com',
+      'image.tmdb.org',
+      'lh3.googleusercontent.com',
+    ],
   },
 
   // SVGR

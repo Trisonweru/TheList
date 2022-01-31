@@ -1,9 +1,24 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-console */
 import { BookmarkIcon, HeartIcon, XIcon } from '@heroicons/react/outline';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
+import {
+  EmailIcon,
+  EmailShareButton,
+  FacebookIcon,
+  FacebookShareButton,
+  LinkedinIcon,
+  LinkedinShareButton,
+  RedditIcon,
+  RedditShareButton,
+  WhatsappIcon,
+  WhatsappShareButton,
+} from 'next-share';
 import React from 'react';
+import { fetcher } from 'utils/fetcher';
 
 import HeaderItem from './layout/HeaderItem';
 
@@ -21,19 +36,30 @@ const style = {
 };
 function Mod({ open, handleClose, data }: any) {
   const BASE_URL = 'https://image.tmdb.org/t/p/original';
-  const router = useRouter();
+  const { data: session } = useSession();
 
+  const handleFavorite = async () => {
+    const res = await fetcher('/api/favorite', { data, session });
+    console.log(res);
+  };
+  const handleWatchlist = async () => {
+    const res = await fetcher('/api/watchlist', { data, session });
+    console.log(res);
+  };
   return (
     <Modal
       open={open}
-      onClose={() => handleClose()}
+      onClose={handleClose}
       aria-labelledby='modal-modal-title'
       aria-describedby='modal-modal-description'
     >
-      <Box sx={style} className='overflow-y-scroll scrollbar-hide'>
-        <div className='flex flex-wrap items-start '>
-          <div className='m-3 flex w-full justify-end'>
-            <XIcon className='h-8 cursor-pointer hover:text-[#52b3da] active:text-red-500' />
+      <Box sx={style} className='overflow-y-scroll scrollbar-hide '>
+        <div className='relative flex flex-wrap items-start '>
+          <div className='sticky top-0 left-0 right-0 z-50 m-3 flex w-full justify-end'>
+            <XIcon
+              className='h-8 cursor-pointer hover:text-[#52b3da] active:text-red-500'
+              onClick={handleClose}
+            />
           </div>
           <div className='w-3/4 flex-grow'>
             <Image
@@ -89,16 +115,73 @@ function Mod({ open, handleClose, data }: any) {
             </div>
           </div>
           <div className='mt-4 flex h-full  items-end'>
-            <div className='pl-2'>
-              <HeaderItem title='Favorite' Icon={HeartIcon} />
+            <div className='pl-2' onClick={handleFavorite}>
+              <HeaderItem title='Favorite' Icon={HeartIcon} url='' />
             </div>
-            <div className='pl-2'>
-              <HeaderItem title='Add to watchlist' Icon={BookmarkIcon} />
+            <div className='pl-2' onClick={handleWatchlist}>
+              <HeaderItem title='Add to watchlist' Icon={BookmarkIcon} url='' />
+            </div>
+          </div>
+          <div className='flex w-full'>
+            <div className='w-12 pt-2 sm:w-20'>
+              <FacebookShareButton
+                url={
+                  `${BASE_URL}${data.backdrop_path || data.poster_path}` ||
+                  `${BASE_URL}${data.poster_path}`
+                }
+                quote={data.title || data.original_name}
+                hashtag={`#${data.title || data.original_name}`}
+              >
+                <FacebookIcon size={32} round />
+              </FacebookShareButton>
+            </div>
+            <div className='w-12 pt-2 sm:w-20'>
+              <RedditShareButton
+                url={
+                  `${BASE_URL}${data.backdrop_path || data.poster_path}` ||
+                  `${BASE_URL}${data.poster_path}`
+                }
+                title={data.title || data.original_name}
+              >
+                <RedditIcon size={32} round />
+              </RedditShareButton>
+            </div>
+            <div className='w-12 pt-2 sm:w-20'>
+              <LinkedinShareButton
+                url={
+                  `${BASE_URL}${data.backdrop_path || data.poster_path}` ||
+                  `${BASE_URL}${data.poster_path}`
+                }
+              >
+                <LinkedinIcon size={32} round />
+              </LinkedinShareButton>
+            </div>
+            <div className='w-12 pt-2 sm:w-20'>
+              <EmailShareButton
+                url={
+                  `${BASE_URL}${data.backdrop_path || data.poster_path}` ||
+                  `${BASE_URL}${data.poster_path}`
+                }
+                subject={data.title || data.original_name}
+                body={data.overview}
+              >
+                <EmailIcon size={32} round />
+              </EmailShareButton>
+            </div>
+            <div className='w-12 pt-2 sm:w-20'>
+              <WhatsappShareButton
+                url={
+                  `${BASE_URL}${data.backdrop_path || data.poster_path}` ||
+                  `${BASE_URL}${data.poster_path}`
+                }
+                title={data.title || data.original_name}
+                separator=':: '
+              >
+                <WhatsappIcon size={32} round />
+              </WhatsappShareButton>
             </div>
           </div>
         </div>
-
-        {/* <Button onClick={handleClose()}>Close</Button> */}
       </Box>
     </Modal>
   );

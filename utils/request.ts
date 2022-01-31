@@ -1,6 +1,7 @@
 const API_KEY = process.env.API_KEY;
 
 // eslint-disable-next-line import/no-anonymous-default-export
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 export default {
   fetchTreding: {
     title: 'Trending',
@@ -46,4 +47,4 @@ export default {
     title: 'TV Movie',
     url: `/discover/movie?api_key=${API_KEY}&with_genres=10770`,
   },
-};
+}!;
