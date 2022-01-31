@@ -5,7 +5,6 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import { SessionProvider } from 'next-auth/react';
 import PropTypes from 'prop-types';
 
-import { ModalProvider } from '../context/ModalContext';
 import { darkTheme } from '../styles/theme/lightTheme';
 import createEmotionCache from '../../utils/createEmotionCache';
 
@@ -33,14 +32,12 @@ const MyApp = (props: {
   return (
     <SessionProvider session={session}>
       <CacheProvider value={emotionCache}>
-        <ModalProvider>
-          <ThemeProvider theme={darkTheme}>
-            <CssBaseline />
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </ThemeProvider>
-        </ModalProvider>
+        <ThemeProvider theme={darkTheme}>
+          <CssBaseline />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </ThemeProvider>
       </CacheProvider>
     </SessionProvider>
   );
