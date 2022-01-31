@@ -17,7 +17,7 @@ import {
   WhatsappIcon,
   WhatsappShareButton,
 } from 'next-share';
-import React from 'react';
+import React, { useState } from 'react';
 import { fetcher } from 'utils/fetcher';
 
 import HeaderItem from './layout/HeaderItem';
@@ -37,14 +37,33 @@ const style = {
 function Mod({ open, handleClose, data }: any) {
   const BASE_URL = 'https://image.tmdb.org/t/p/original';
   const { data: session } = useSession();
+  const [showSuccessf, setShowSuccessf] = useState(false);
+  const [showErrorf, setShowErrorf] = useState(false);
+  const [showSuccessw, setShowSuccessw] = useState(false);
+  const [showErrorw, setShowErrorw] = useState(false);
 
-  const handleFavorite = async () => {
+  const handleFavorite = async (e: any) => {
+    e.preventDefault();
     const res = await fetcher('/api/favorite', { data, session });
-    console.log(res);
+
+    if (res.status === undefined) {
+      setShowSuccessf(true);
+      setTimeout(() => setShowSuccessf(false), 5000);
+    } else {
+      setShowErrorf(true);
+      setTimeout(() => setShowErrorf(false), 5000);
+    }
   };
-  const handleWatchlist = async () => {
+  const handleWatchlist = async (e: any) => {
+    e.preventDefault();
     const res = await fetcher('/api/watchlist', { data, session });
-    console.log(res);
+    if (res.status === undefined) {
+      setShowSuccessw(true);
+      setTimeout(() => setShowSuccessw(false), 5000);
+    } else {
+      setShowErrorw(true);
+      setTimeout(() => setShowErrorw(false), 5000);
+    }
   };
   return (
     <Modal
@@ -55,6 +74,34 @@ function Mod({ open, handleClose, data }: any) {
     >
       <Box sx={style} className='overflow-y-scroll scrollbar-hide '>
         <div className='relative flex flex-wrap items-start '>
+          {showSuccessf && (
+            <div className='absolute bottom-0 left-0 right-0 z-50 mb-4 flex w-full justify-end'>
+              <div className='flex min-h-[50px] max-w-[25%]  items-center justify-between bg-green-500 px-3 shadow-xl sm:max-w-[25%]'>
+                <p>{data.title} added to your watchlist!</p>
+              </div>
+            </div>
+          )}
+          {showSuccessw && (
+            <div className='absolute bottom-0 left-0 right-0 z-50 mb-4 flex w-full justify-end'>
+              <div className='flex h-auto min-h-[50px] max-w-[50%]  items-center  justify-between bg-green-500 px-3 shadow-xl sm:max-w-[25%]'>
+                <p>{data.title} added to your watchlist!</p>
+              </div>
+            </div>
+          )}
+          {showErrorf && (
+            <div className='absolute bottom-0 left-0 right-0 z-50  mb-4 flex w-full justify-end'>
+              <div className='flex h-auto min-h-[50px] max-w-[50%]  items-center justify-between bg-green-500 px-3 shadow-xl sm:max-w-[25%]'>
+                <p>Could not add to your favorite list!</p>
+              </div>
+            </div>
+          )}
+          {showErrorw && (
+            <div className='absolute bottom-0 left-0 right-0 z-50 mb-4 flex w-full justify-end'>
+              <div className='flex h-auto min-h-[50px] max-w-[50%] items-center justify-between bg-green-500 px-3 shadow-xl sm:max-w-[25%]'>
+                <p>Could not add to your watchlist!</p>
+              </div>
+            </div>
+          )}
           <div className='sticky top-0 left-0 right-0 z-50 m-3 flex w-full justify-end'>
             <XIcon
               className='h-8 cursor-pointer hover:text-[#52b3da] active:text-red-500'
@@ -186,5 +233,4 @@ function Mod({ open, handleClose, data }: any) {
     </Modal>
   );
 }
-
 export default Mod;

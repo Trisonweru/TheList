@@ -3,7 +3,6 @@ import {
   CollectionIcon,
   HomeIcon,
   LightningBoltIcon,
-  SearchIcon,
   UserIcon,
 } from '@heroicons/react/outline';
 
@@ -21,7 +20,7 @@ function Header() {
         />
         <HeaderItem title='VERIFIED' Icon={BadgeCheckIcon} url='/' />
         <HeaderItem title='COLLECTIONS' Icon={CollectionIcon} url='/' />
-        <HeaderItem title='SEARCH' Icon={SearchIcon} url='/' />
+
         <HeaderItem title='ACCOUNT' Icon={UserIcon} url='/account' />
       </div>
       <div className='flex items-center'>

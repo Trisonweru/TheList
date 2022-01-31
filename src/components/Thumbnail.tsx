@@ -6,7 +6,7 @@ import React from 'react';
 
 import Mod from './Modal';
 
-const Thumbnail = React.forwardRef(({ result }: any) => {
+const Thumbnail = React.forwardRef(({ result }: any, ref) => {
   const BASE_URL = 'https://image.tmdb.org/t/p/original';
 
   const [open, setOpen] = React.useState(false);

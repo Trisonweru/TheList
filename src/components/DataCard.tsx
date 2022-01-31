@@ -26,33 +26,29 @@ function DataCard({ data, session, type, onDelete }: props) {
 
   return (
     <>
-    
-        <div className='flex w-full flex-wrap items-center px-2 py-1 shadow-xl'>
-          <div className='sm:w-1/4 '>
-            <Image
-              src={`${BASE_URL}${data.image}`}
-              width={1080}
-              height={800}
-              layout='intrinsic'
-              alt={data.title}
-              objectFit='cover'
-            />
+      <div className='flex w-full transform flex-wrap items-center px-4 py-1 shadow-xl transition duration-200  ease-in hover:z-50 sm:hover:scale-105'>
+        <div className='sm:w-1/4 '>
+          <Image
+            src={`${BASE_URL}${data.image}`}
+            width={1080}
+            height={800}
+            layout='intrinsic'
+            alt={data.title}
+            objectFit='cover'
+          />
+        </div>
+        <div className='flex h-full flex-1 flex-col items-start space-y-2 sm:ml-4'>
+          <div>
+            <h3 className='text-lg text-[#52b3da]'>{data.title}</h3>
           </div>
-          <div className='flex h-full flex-1 flex-col items-start space-y-2 sm:ml-4'>
-            <div>
-              <h3 className='text-lg text-[#52b3da]'>{data.title}</h3>
-            </div>
-            <div>
-              <p>{data.overview}</p>
-            </div>
-            <div className='flex w-full items-center justify-end'>
-              <Button onClick={handleDelete}>Delete</Button>
-            </div>
+          <div>
+            <p className='max-w-2/3 text-sm'>{data.overview}</p>
+          </div>
+          <div className='flex w-full items-center justify-end'>
+            <Button onClick={handleDelete}>Delete</Button>
           </div>
         </div>
-      
-       
-      
+      </div>
     </>
   );
 }
