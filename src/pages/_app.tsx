@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CacheProvider } from '@emotion/react';
+import { CacheProvider, EmotionCache } from '@emotion/react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { SessionProvider } from 'next-auth/react';
 import PropTypes from 'prop-types';
@@ -15,9 +16,15 @@ import '@/styles/colors.css';
 
 import Layout from '@/components/layout/Layout';
 
-const MyApp = (props: any) => {
+const MyApp = (props: {
+  Component: any;
+  emotionCache: EmotionCache | undefined;
+  pageProps: any;
+  session: any;
+}) => {
   const {
     Component,
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     emotionCache = clientSideEmotionCache,
     pageProps,
     session,
