@@ -5,11 +5,11 @@ const Nav = () => {
   return (
     <nav className='relative'>
       <div className='flex space-x-10  overflow-x-scroll whitespace-nowrap px-10 scrollbar-hide sm:space-x-20 sm:px-20'>
-        {Object.entries(request).map(([key, { title, url }], index) => {
+        {Object.entries(request).map(([key, { title }], index) => {
           return (
             <h2
               key={index}
-              onClick={() => router.push(`/?genre=${key}`)}
+              onClick={() => router.push(`/?genre=${key.toString()}`)}
               className='transform cursor-pointer text-base transition duration-100  last:pr-24  hover:scale-125 hover:text-white active:text-red-500'
             >
               {title}
