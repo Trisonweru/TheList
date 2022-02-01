@@ -21,13 +21,14 @@ function Account({ session, favorite, watchlist }: props) {
   const [fav, setFav] = useState([...favorite]);
   const [watchlst, setWatchlst] = useState([...watchlist]);
   const handleFav = () => {
-    setClickedFavorite(true);
-    setClickedWatchList(false);
+    setClickedFavorite(!clickedFavorite);
+    setClickedWatchList(!clickedWatchList);
   };
   const handleWatchList = () => {
-    setClickedWatchList(true);
-    setClickedFavorite(false);
+    setClickedWatchList(!clickedWatchList);
+    setClickedFavorite(!clickedFavorite);
   };
+  console.log(fav);
   const onDeleteItem = (item: any, type: any) => {
     if (type === 'favorite') {
       fav.map((it, index) => {
@@ -96,6 +97,7 @@ function Account({ session, favorite, watchlist }: props) {
               Favorite
             </div>
           </div>
+
           <div className='mt-6 flex w-full flex-col items-center space-y-6'>
             {clickedFavorite &&
               fav.map((item: { id: React.Key | null | undefined }) => (
@@ -132,9 +134,11 @@ export const getServerSideProps = async (ctx: GetSessionParams | undefined) => {
   // const prisma = new PrismaClient();
   const favorite = await prisma?.favorite.findMany({
     where: { user: session?.user },
+    orderBy: { id: 'desc' },
   });
   const watchlist = await prisma?.watchList.findMany({
     where: { user: session?.user },
+    orderBy: { id: 'desc' },
   });
 
   if (!session) {
@@ -146,6 +150,10 @@ export const getServerSideProps = async (ctx: GetSessionParams | undefined) => {
     };
   }
   return {
-    props: { session, favorite: favorite, watchlist: watchlist },
+    props: {
+      session,
+      favorite: favorite,
+      watchlist: watchlist,
+    },
   };
 };
