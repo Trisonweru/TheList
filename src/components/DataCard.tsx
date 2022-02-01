@@ -1,9 +1,11 @@
+/* eslint-disable unused-imports/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
 import { Button } from '@mui/material';
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 import { fetcher } from 'utils/fetcher';
+
 type props = {
   data: any;
   session: any;
@@ -12,6 +14,7 @@ type props = {
 };
 
 function DataCard({ data, session, type, onDelete }: props) {
+  const [watched, setWatched] = useState(data.watched);
   const BASE_URL = 'https://image.tmdb.org/t/p/original';
 
   const handleDelete = async () => {
@@ -20,8 +23,14 @@ function DataCard({ data, session, type, onDelete }: props) {
       session: session,
       type: type,
     });
-    console.log(res);
     await onDelete(data, type);
+  };
+
+  const handleWatched = async () => {
+    const res = await fetcher('/api/watched', { data, session });
+    if (res.status === undefined) {
+      setWatched(true);
+    }
   };
 
   return (
@@ -44,7 +53,26 @@ function DataCard({ data, session, type, onDelete }: props) {
           <div>
             <p className='max-w-2/3 text-sm'>{data.overview}</p>
           </div>
-          <div className='flex w-full items-center justify-end'>
+          <div
+            className={
+              type === 'watchlist'
+                ? 'flex w-full items-center justify-between'
+                : 'flex w-full items-center justify-end'
+            }
+          >
+            {type === 'watchlist' && (
+              <button
+                disabled={watched ? true : false}
+                className={
+                  watched
+                    ? 'rounded-md bg-[#1F2933] px-6 py-1.5 text-[#316c85]'
+                    : 'rounded-md bg-[#316c85] px-6 py-1.5'
+                }
+                onClick={handleWatched}
+              >
+                Watched
+              </button>
+            )}
             <Button onClick={handleDelete}>Delete</Button>
           </div>
         </div>
