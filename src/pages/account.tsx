@@ -28,7 +28,7 @@ function Account({ session, favorite, watchlist }: props) {
     setClickedWatchList(!clickedWatchList);
     setClickedFavorite(!clickedFavorite);
   };
-  console.log(fav);
+
   const onDeleteItem = (item: any, type: any) => {
     if (type === 'favorite') {
       fav.map((it, index) => {

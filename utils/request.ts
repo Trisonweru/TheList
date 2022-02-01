@@ -4,19 +4,7 @@ const API_KEY = process.env.API_KEY;
 
 // eslint-disable-next-line import/no-anonymous-default-export
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-interface props {
-  fetchTreding: { title: string; url: string };
-  fetchTopRated: { title: string; url: string };
-  fetchActionMovies: { title: string; url: string };
-  fetchCommedyMovies: { title: string; url: string };
-  fetchHorrorMovies: { title: string; url: string };
-  fetchRomanceMovies: { title: string; url: string };
-  fetchMystery: { title: string; url: string };
-  fetchScifi: { title: string; url: string };
-  fetchWestern: { title: string; url: string };
-  fetchAnimation: { title: string; url: string };
-  fetchTv: { title: string; url: string };
-}
+
 export default {
   fetchTreding: {
     title: 'Trending',
