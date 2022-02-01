@@ -51,7 +51,7 @@ function Account({ session, favorite, watchlist }: props) {
     <>
       <Seo templateTitle='Account' />
       <Header />
-      <div className='flex min-h-screen flex-col items-center justify-center space-x-4 sm:flex-row-reverse sm:items-start sm:pl-16'>
+      <div className='flex min-h-screen flex-col items-center justify-center sm:flex-row sm:items-start sm:pr-4 '>
         <div className=' mt-10 ml-4 mr-4 flex w-[80%] flex-wrap items-center justify-between rounded-md bg-[#161B22] p-4 shadow-md sm:mt-0 xl:w-1/4'>
           <div className='flex items-center space-x-4'>
             <Image
@@ -74,7 +74,7 @@ function Account({ session, favorite, watchlist }: props) {
             </Button>
           </div>
         </div>
-        <div className='mt-10 mb-10 flex w-[80%] flex-col items-center justify-between rounded-md bg-[#161B22] p-4 shadow-md sm:mt-0 sm:flex-grow'>
+        <div className='mt-10 mb-10 flex w-[80%] flex-col items-center justify-between rounded-md bg-[#161B22] p-4 shadow-md sm:mt-0 sm:w-3/4 sm:flex-grow'>
           <div className='flex w-full justify-between space-x-4 p-2'>
             <div
               className={
