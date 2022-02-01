@@ -3,6 +3,7 @@
 /* eslint-disable no-console */
 import { Button } from '@mui/material';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { fetcher } from 'utils/fetcher';
 
@@ -14,8 +15,10 @@ type props = {
 };
 
 function DataCard({ data, session, type, onDelete }: props) {
-  const [watched, setWatched] = useState(data.watched);
   const BASE_URL = 'https://image.tmdb.org/t/p/original';
+  const [wcthd, setWcthd] = useState(data.watched);
+
+  const router = useRouter();
 
   const handleDelete = async () => {
     const res = await fetcher('/api/delete', {
@@ -29,7 +32,8 @@ function DataCard({ data, session, type, onDelete }: props) {
   const handleWatched = async () => {
     const res = await fetcher('/api/watched', { data, session });
     if (res.status === undefined) {
-      setWatched(true);
+      setWcthd(true);
+      router.reload();
     }
   };
 
@@ -62,9 +66,9 @@ function DataCard({ data, session, type, onDelete }: props) {
           >
             {type === 'watchlist' && (
               <button
-                disabled={watched ? true : false}
+                disabled={wcthd ? true : false}
                 className={
-                  watched
+                  wcthd
                     ? 'rounded-md bg-[#1F2933] px-6 py-1.5 text-[#316c85]'
                     : 'rounded-md bg-[#316c85] px-6 py-1.5'
                 }
