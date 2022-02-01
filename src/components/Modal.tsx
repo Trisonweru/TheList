@@ -163,10 +163,10 @@ function Mod({ open, handleClose, data }: any) {
           </div>
           <div className='mt-4 flex h-full  items-end'>
             <div className='pl-2' onClick={handleFavorite}>
-              <HeaderItem title='Favorite' Icon={HeartIcon} url='' />
+              <HeaderItem title='Favorite' Icon={HeartIcon} />
             </div>
             <div className='pl-2' onClick={handleWatchlist}>
-              <HeaderItem title='Add to watchlist' Icon={BookmarkIcon} url='' />
+              <HeaderItem title='Add to watchlist' Icon={BookmarkIcon} />
             </div>
           </div>
           <div className='flex w-full'>

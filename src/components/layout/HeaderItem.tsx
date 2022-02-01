@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 interface props {
   title: string;
   Icon: any;
-  url: string;
+  url?: string;
 }
 const HeaderItem = ({ title, Icon, url }: props) => {
   const router = useRouter();
