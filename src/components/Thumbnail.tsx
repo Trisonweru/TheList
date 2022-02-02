@@ -6,7 +6,7 @@ import React from 'react';
 
 import Mod from './Modal';
 
-const Thumbnail = React.forwardRef(({ result }: any, ref) => {
+const Thumbnail = React.forwardRef(({ result, customLists }: any, ref) => {
   const BASE_URL = 'https://image.tmdb.org/t/p/original';
 
   const [open, setOpen] = React.useState(false);
@@ -44,7 +44,12 @@ const Thumbnail = React.forwardRef(({ result }: any, ref) => {
           </div>
         </div>
       </div>
-      <Mod open={open} handleClose={handleClose} data={result} />
+      <Mod
+        open={open}
+        handleClose={handleClose}
+        data={result}
+        customLists={customLists}
+      />
     </>
   );
 });

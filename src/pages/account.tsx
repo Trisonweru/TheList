@@ -50,7 +50,7 @@ function Account({ session, favorite, watchlist }: props) {
   return (
     <>
       <Seo templateTitle='Account' />
-      <Header />
+      <Header disp={true} />
       <div className='flex min-h-screen flex-col items-center justify-center sm:flex-row sm:items-start sm:pr-4 '>
         <div className=' mt-10 ml-4 mr-4 flex w-[80%] flex-wrap items-center justify-between rounded-md bg-[#161B22] p-4 shadow-md sm:mt-0 xl:w-1/4'>
           <div className='flex items-center space-x-4'>

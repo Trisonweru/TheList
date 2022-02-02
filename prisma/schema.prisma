@@ -49,6 +49,7 @@ model User {
   sessions      Session[]
   watchlist     WatchList[]
   favorites     Favorite[]
+  customlist    CustomList[]
 }
 
 model VerificationToken {
@@ -77,4 +78,23 @@ model WatchList{
   watched Boolean @default(false)
   userId             String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model CustomList{
+  id                 String  @id @default(cuid())
+  name String @unique
+  movies CustomListMovies[]
+  userId             String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+}
+
+model CustomListMovies{
+  id                 String  @id @default(cuid())
+  title String
+  image String
+  overview String
+  watched Boolean @default(false)  
+  listId             String
+  list CustomList @relation(fields: [listId], references: [id], onDelete: Cascade)
 }

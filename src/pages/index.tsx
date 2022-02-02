@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { getSession } from 'next-auth/react';
 import * as React from 'react';
 import request from 'utils/request';
+
+import prisma from '@/lib/prisma';
 
 import Header from '@/components/layout/Header';
 import Layout from '@/components/layout/Layout';
@@ -21,22 +24,25 @@ import Seo from '@/components/Seo';
 // Before you begin editing, follow all comments with `STARTERCONF`,
 // to customize the default configuration.
 
-export default function HomePage({ results, search }: any) {
+export default function HomePage({ results, search, customLists }: any) {
   return (
     <Layout>
       <Seo templateTitle='TheList' />
-      <Header />
+      <Header disp={true} />
       <Search />
       <Nav />
 
-      <Results results={search.length > 0 ? search : results} />
+      <Results
+        results={search.length > 0 ? search : results}
+        customLists={customLists}
+      />
     </Layout>
   );
 }
 
-export async function getServerSideProps(context: {
-  query: { genre: string; search: string };
-}) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function getServerSideProps(context: any) {
+  const session = await getSession(context);
   const genre: string = context.query.genre;
   const search: string = context.query.search;
   const requests = await fetch(
@@ -44,6 +50,7 @@ export async function getServerSideProps(context: {
       request[genre]?.url || request.fetchTreding.url
     }`
   );
+
   const Capitalize = (mySentence: string) => {
     const words = mySentence.split(' ');
 
@@ -63,11 +70,28 @@ export async function getServerSideProps(context: {
       }
     });
   }
-
+  const lists = [];
+  if (session) {
+    const user = await prisma?.user.findFirst({
+      where: { email: session.user.email },
+    });
+    const customList = await prisma.customList.findMany({
+      where: {
+        userId: user.id,
+      },
+      orderBy: {
+        id: 'desc',
+      },
+    });
+    customList.map((item: { id: string; name: string; userId: string }) =>
+      lists.push(item)
+    );
+  }
   return {
     props: {
       results: results.results,
       search: searchedObj,
+      customLists: lists,
     },
   };
 }
