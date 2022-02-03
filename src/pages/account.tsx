@@ -105,7 +105,7 @@ function Account({ session, favorite, watchlist, customLists }: props) {
               <div className='sticky left-0 top-0 flex w-full items-center justify-center bg-[#161B22] py-2 shadow-md '>
                 <h2 className='text-lg'>Your Lists</h2>
               </div>
-              <div className='mt-4 w-full py-4  '>
+              <div className='mx-4 mt-1 w-full py-4'>
                 {customLists.map(
                   (item: {
                     id: string;
@@ -126,7 +126,7 @@ function Account({ session, favorite, watchlist, customLists }: props) {
                         }
                         onClick={() => handleListClick(item.id, item.movies)}
                       >
-                        <p>{item.name}</p>
+                        <p className='text-base'>{item.name}</p>
                       </div>
                     );
                   }
