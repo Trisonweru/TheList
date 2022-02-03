@@ -2,10 +2,8 @@
 import { Button } from '@mui/material';
 // import { PrismaClient } from '@prisma/client';
 import Image from 'next/image';
-import { getSession, GetSessionParams, signOut } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import React, { useState } from 'react';
-
-import prisma from '@/lib/prisma';
 
 import DataCard from '@/components/DataCard';
 import Header from '@/components/layout/Header';
@@ -58,6 +56,16 @@ function Account({ session, favorite, watchlist, customLists }: props) {
         if (it.id === item.id) {
           watchlst.splice(index, 1);
           setWatchlst([...watchlst]);
+        }
+      });
+    }
+  };
+  const onListDeleteItem = (data: { id: any }) => {
+    if (clickedMovies.length > 0) {
+      clickedMovies.map((item, index) => {
+        if (item.id === data.id) {
+          clickedMovies.splice(index, 1);
+          setClickedMovies([...clickedMovies]);
         }
       });
     }
@@ -213,8 +221,8 @@ function Account({ session, favorite, watchlist, customLists }: props) {
                         data={item}
                         key={item.id}
                         session={session}
-                        type='watchlist'
-                        onDelete={onDeleteItem}
+                        type='customlist'
+                        onListDeleteItem={onListDeleteItem}
                       />
                     )
                   )}
@@ -230,39 +238,3 @@ function Account({ session, favorite, watchlist, customLists }: props) {
 }
 
 export default Account;
-
-export const getServerSideProps = async (ctx: GetSessionParams | undefined) => {
-  const session = await getSession(ctx);
-  // const prisma = new PrismaClient();
-  const favorite = await prisma?.favorite.findMany({
-    where: { user: session?.user },
-    orderBy: { id: 'desc' },
-  });
-  const watchlist = await prisma?.watchList.findMany({
-    where: { user: session?.user },
-    orderBy: { id: 'desc' },
-  });
-  const lists = await prisma?.customList.findMany({
-    where: { user: session.user },
-    include: {
-      movies: true,
-    },
-    orderBy: { id: 'desc' },
-  });
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
-  return {
-    props: {
-      session,
-      favorite: favorite,
-      watchlist: watchlist,
-      customLists: lists,
-    },
-  };
-};

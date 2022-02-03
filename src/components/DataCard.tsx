@@ -11,10 +11,11 @@ type props = {
   data: any;
   session?: any;
   type?: string;
-  onDelete: any;
+  onDelete?: any;
+  onListDeleteItem?: any;
 };
 
-function DataCard({ data, session, type, onDelete }: props) {
+function DataCard({ data, session, type, onDelete, onListDeleteItem }: props) {
   const BASE_URL = 'https://image.tmdb.org/t/p/original';
   const [wcthd, setWcthd] = useState(data.watched);
 
@@ -29,11 +30,27 @@ function DataCard({ data, session, type, onDelete }: props) {
     await onDelete(data, type);
   };
 
+  const handleListDeleteItem = async () => {
+    const res = await fetcher('/api/listdelete', { data, session: session });
+    if (res.id) {
+      await onListDeleteItem(data);
+    }
+  };
+
   const handleWatched = async () => {
-    const res = await fetcher('/api/watched', { data, session });
-    if (res.status === undefined) {
-      setWcthd(true);
-      router.reload();
+    if (type === 'watchlist') {
+      const res = await fetcher('/api/watched', { data, session });
+      if (res.status === undefined) {
+        setWcthd(true);
+        router.reload();
+      }
+    }
+    if (type === 'customlist') {
+      const res = await fetcher('/api/customwatched', { data, session });
+      if (res.status === undefined) {
+        setWcthd(true);
+        router.reload();
+      }
     }
   };
 
@@ -64,20 +81,25 @@ function DataCard({ data, session, type, onDelete }: props) {
                 : 'flex w-full items-center justify-end'
             }
           >
-            {type === 'watchlist' && (
-              <button
-                disabled={wcthd ? true : false}
-                className={
-                  wcthd
-                    ? 'rounded-md bg-[#1F2933] px-6 py-1.5 text-[#316c85]'
-                    : 'rounded-md bg-[#316c85] px-6 py-1.5'
-                }
-                onClick={handleWatched}
-              >
-                Watched
-              </button>
-            )}
-            <Button onClick={handleDelete}>Delete</Button>
+            {type === 'watchlist' ||
+              (type === 'customlist' && (
+                <button
+                  disabled={wcthd ? true : false}
+                  className={
+                    wcthd
+                      ? 'rounded-md bg-[#1F2933] px-6 py-1.5 text-[#316c85]'
+                      : 'rounded-md bg-[#316c85] px-6 py-1.5'
+                  }
+                  onClick={handleWatched}
+                >
+                  Watched
+                </button>
+              ))}
+            <Button
+              onClick={handleDelete ? handleDelete : handleListDeleteItem}
+            >
+              Delete
+            </Button>
           </div>
         </div>
       </div>
