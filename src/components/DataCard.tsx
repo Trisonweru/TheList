@@ -74,7 +74,7 @@ function DataCard({ data, session, type, onDelete, onListDeleteItem }: props) {
           </div>
           <div
             className={
-              type === 'watchlist'
+              type === 'watchlist' || type === 'customlist'
                 ? 'flex w-full items-center justify-between'
                 : 'flex w-full items-center justify-end'
             }
