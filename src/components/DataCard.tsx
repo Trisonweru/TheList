@@ -38,19 +38,17 @@ function DataCard({ data, session, type, onDelete, onListDeleteItem }: props) {
   };
 
   const handleWatched = async () => {
-    if (type === 'watchlist') {
-      const res = await fetcher('/api/watched', { data, session });
-      if (res.status === undefined) {
-        setWcthd(true);
-        router.reload();
-      }
+    const res = await fetcher('/api/watched', { data, session });
+    if (res.status === undefined) {
+      setWcthd(true);
+      router.reload();
     }
-    if (type === 'customlist') {
-      const res = await fetcher('/api/customwatched', { data, session });
-      if (res.status === undefined) {
-        setWcthd(true);
-        router.reload();
-      }
+  };
+  const handleListItemWatched = async () => {
+    const res = await fetcher('/api/customwatched', { data, session });
+    if (res.status === undefined) {
+      setWcthd(true);
+      router.reload();
     }
   };
 
@@ -81,22 +79,40 @@ function DataCard({ data, session, type, onDelete, onListDeleteItem }: props) {
                 : 'flex w-full items-center justify-end'
             }
           >
-            {type === 'watchlist' ||
-              (type === 'customlist' && (
-                <button
-                  disabled={wcthd ? true : false}
-                  className={
-                    wcthd
-                      ? 'rounded-md bg-[#1F2933] px-6 py-1.5 text-[#316c85]'
-                      : 'rounded-md bg-[#316c85] px-6 py-1.5'
-                  }
-                  onClick={handleWatched}
-                >
-                  Watched
-                </button>
-              ))}
+            {type === 'watchlist' && (
+              <button
+                disabled={wcthd ? true : false}
+                className={
+                  wcthd
+                    ? 'rounded-md bg-[#1F2933] px-6 py-1.5 text-[#316c85]'
+                    : 'rounded-md bg-[#316c85] px-6 py-1.5'
+                }
+                onClick={handleWatched}
+              >
+                Watched
+              </button>
+            )}
+            {type === 'customlist' && (
+              <button
+                disabled={wcthd ? true : false}
+                className={
+                  wcthd
+                    ? 'rounded-md bg-[#1F2933] px-6 py-1.5 text-[#316c85]'
+                    : 'rounded-md bg-[#316c85] px-6 py-1.5'
+                }
+                onClick={handleListItemWatched}
+              >
+                Watched
+              </button>
+            )}
             <Button
-              onClick={handleDelete ? handleDelete : handleListDeleteItem}
+              onClick={
+                type === 'watchlist'
+                  ? handleDelete
+                  : type === 'customlist'
+                  ? handleListDeleteItem
+                  : null
+              }
             >
               Delete
             </Button>
