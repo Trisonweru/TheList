@@ -2,8 +2,10 @@
 import { Button } from '@mui/material';
 // import { PrismaClient } from '@prisma/client';
 import Image from 'next/image';
-import { signOut } from 'next-auth/react';
+import { getSession, GetSessionParams, signOut } from 'next-auth/react';
 import React, { useState } from 'react';
+
+import prisma from '@/lib/prisma';
 
 import DataCard from '@/components/DataCard';
 import Header from '@/components/layout/Header';
@@ -238,3 +240,39 @@ function Account({ session, favorite, watchlist, customLists }: props) {
 }
 
 export default Account;
+
+export const getServerSideProps = async (ctx: GetSessionParams | undefined) => {
+  const session = await getSession(ctx);
+  // const prisma = new PrismaClient();
+  const favorite = await prisma?.favorite.findMany({
+    where: { user: session?.user },
+    orderBy: { id: 'desc' },
+  });
+  const watchlist = await prisma?.watchList.findMany({
+    where: { user: session?.user },
+    orderBy: { id: 'desc' },
+  });
+  const lists = await prisma?.customList.findMany({
+    where: { user: session.user },
+    include: {
+      movies: true,
+    },
+    orderBy: { id: 'desc' },
+  });
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {
+      session,
+      favorite: favorite,
+      watchlist: watchlist,
+      customLists: lists,
+    },
+  };
+};
