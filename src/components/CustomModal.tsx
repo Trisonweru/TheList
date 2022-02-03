@@ -55,11 +55,8 @@ function CustomModal({
       aria-labelledby='modal-modal-title'
       aria-describedby='modal-modal-description'
     >
-      <Box
-        sx={style}
-        className='absolute top-[50%] left-[50%] flex h-auto max-h-[60%] w-[60%] translate-y-[-50%] translate-x-[-50%] transform flex-col items-end justify-start overflow-y-scroll bg-[rgba(0,0,0,1)] px-2 pt-2  pb-2  shadow-xl scrollbar-hide lg:w-[25%]'
-      >
-        <div className='relative flex flex-wrap items-start '>
+      <Box className='absolute top-[50%] left-[50%] flex h-auto max-h-[60%] w-[60%] translate-y-[-50%] translate-x-[-50%] transform flex-col items-end justify-start overflow-y-scroll bg-[rgba(0,0,0,1)] px-2 pt-2  pb-2  shadow-xl scrollbar-hide lg:w-[25%]'>
+        <div className='relative flex w-full flex-wrap items-start'>
           <div className='sticky left-0 top-0 flex w-full items-center justify-between bg-[#1E1E1E] py-1 px-1 shadow-md'>
             <XIcon
               className='h-7 cursor-pointer hover:text-[#52b3da] active:text-red-500'
