@@ -9,8 +9,8 @@ import { fetcher } from 'utils/fetcher';
 
 type props = {
   data: any;
-  session: any;
-  type: string;
+  session?: any;
+  type?: string;
   onDelete: any;
 };
 

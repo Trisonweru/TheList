@@ -27,6 +27,7 @@ import { fetcher } from 'utils/fetcher';
 
 import CustomModal from './CustomModal';
 import HeaderItem from './layout/HeaderItem';
+import Notification from './Notification';
 
 const style = {
   position: 'absolute',
@@ -48,6 +49,8 @@ function Mod({ open, handleClose, data, customLists }: any) {
   const [showSuccessw, setShowSuccessw] = useState(false);
   const [showErrorw, setShowErrorw] = useState(false);
   const [customModal, setCustomModal] = useState(false);
+  const [showSuccessC, setShowSuccessC] = useState(false);
+  const [showErrorwC, setShowErrorC] = useState(false);
 
   const handleFavorite = async (e: any) => {
     e.preventDefault();
@@ -84,34 +87,15 @@ function Mod({ open, handleClose, data, customLists }: any) {
       >
         <Box sx={style} className='overflow-y-scroll scrollbar-hide '>
           <div className='relative flex flex-wrap items-start '>
-            {showSuccessf && (
-              <div className='absolute bottom-0 left-0 right-0 z-50 mb-4 flex w-full justify-end'>
-                <div className='flex min-h-[50px] max-w-[25%]  items-center justify-between bg-green-500 px-3 shadow-xl sm:max-w-[25%]'>
-                  <p>{data.title} added to your watchlist!</p>
-                </div>
-              </div>
-            )}
-            {showSuccessw && (
-              <div className='absolute bottom-0 left-0 right-0 z-50 mb-4 flex w-full justify-end'>
-                <div className='flex h-auto min-h-[50px] max-w-[50%]  items-center  justify-between bg-green-500 px-3 shadow-xl sm:max-w-[25%]'>
-                  <p>{data.title} added to your watchlist!</p>
-                </div>
-              </div>
-            )}
-            {showErrorf && (
-              <div className='absolute bottom-0 left-0 right-0 z-50  mb-4 flex w-full justify-end'>
-                <div className='flex h-auto min-h-[50px] max-w-[50%]  items-center justify-between bg-green-500 px-3 shadow-xl sm:max-w-[25%]'>
-                  <p>Could not add to your favorite list!</p>
-                </div>
-              </div>
-            )}
-            {showErrorw && (
-              <div className='absolute bottom-0 left-0 right-0 z-50 mb-4 flex w-full justify-end'>
-                <div className='flex h-auto min-h-[50px] max-w-[50%] items-center justify-between bg-green-500 px-3 shadow-xl sm:max-w-[25%]'>
-                  <p>Could not add to your watchlist!</p>
-                </div>
-              </div>
-            )}
+            <Notification
+              showSuccessf={showSuccessf}
+              showErrorf={showErrorf}
+              showSuccessw={showSuccessw}
+              showErrorw={showErrorw}
+              title={data.title || data.original_name}
+              showErrorwC={showErrorwC}
+              showSuccessC={showSuccessC}
+            />
             <div className='sticky top-0 left-0 right-0 z-50 m-3 flex w-full justify-end'>
               <XIcon
                 className='h-8 cursor-pointer hover:text-[#52b3da] active:text-red-500'
@@ -250,6 +234,12 @@ function Mod({ open, handleClose, data, customLists }: any) {
         open={customModal}
         onClose={handleCloseCustomList}
         customLists={customLists}
+        data={data}
+        session={session}
+        setShowSuccessC={setShowSuccessC}
+        setShowErrorC={setShowErrorC}
+        showSuccessC={showSuccessC}
+        showErrorwC={showErrorwC}
       />
     </>
   );
