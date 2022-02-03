@@ -102,10 +102,10 @@ function Account({ session, favorite, watchlist, customLists }: props) {
           </div>
           <div className='mt-10 flex h-auto max-h-[250px] w-full flex-col items-center overflow-y-scroll rounded-md bg-[#161B22] shadow-md scrollbar-hide'>
             <div className='relative flex w-full flex-col items-center justify-center'>
-              <div className='sticky left-0 top-0 flex w-full items-center justify-center bg-[#1E1E1E] '>
+              <div className='sticky left-0 top-0 flex w-full items-center justify-center bg-[#161B22] py-2 shadow-md '>
                 <h2 className='text-lg'>Your Lists</h2>
               </div>
-              <div className='mt-4 w-full p-4 '>
+              <div className='mt-4 w-full py-4  '>
                 {customLists.map(
                   (item: {
                     id: string;
