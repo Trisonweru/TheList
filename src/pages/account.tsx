@@ -100,7 +100,7 @@ function Account({ session, favorite, watchlist, customLists }: props) {
               </Button>
             </div>
           </div>
-          <div className='mt-10 flex w-full flex-col items-center rounded-md bg-[#161B22] p-4 shadow-md'>
+          <div className='mt-10 flex h-auto max-h-[400px] w-full flex-col items-center overflow-y-scroll rounded-md bg-[#161B22] p-4 shadow-md scrollbar-hide'>
             <div className='left-0 top-0 flex w-full flex-col items-center justify-center'>
               <div className='sticky'>
                 <h2 className='text-lg'>Your Lists</h2>
