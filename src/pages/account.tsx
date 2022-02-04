@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { DotsVerticalIcon } from '@heroicons/react/outline';
 import { Button } from '@mui/material';
-// import { PrismaClient } from '@prisma/client';
 import Image from 'next/image';
 import { getSession, GetSessionParams, signOut } from 'next-auth/react';
 import React, { useState } from 'react';
@@ -121,12 +121,18 @@ function Account({ session, favorite, watchlist, customLists }: props) {
                         key={item.id}
                         className={
                           clikedList && id === item.id
-                            ? 'my-1 flex w-full cursor-pointer items-center justify-start rounded-md bg-[#132b35] py-2 pl-2 text-white'
-                            : 'my-1 flex w-full cursor-pointer items-center justify-start rounded-md bg-[#1F2933] py-2 pl-2 text-gray-400 hover:text-white'
+                            ? 'my-1 flex w-full cursor-pointer items-center justify-between rounded-md bg-[#132b35] py-2 pl-2 text-white'
+                            : 'my-1 flex w-full cursor-pointer items-center justify-between rounded-md bg-[#1F2933] py-2 pl-2 text-gray-400 hover:text-white'
                         }
                         onClick={() => handleListClick(item.id, item.movies)}
                       >
-                        <p className='text-base'>{item.name}</p>
+                        <div>
+                          {' '}
+                          <p className='text-base'>{item.name}</p>
+                        </div>
+                        <div>
+                          <DotsVerticalIcon />
+                        </div>
                       </div>
                     );
                   }
