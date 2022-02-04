@@ -9,13 +9,19 @@ import Seo from '@/components/Seo';
 
 function CustomList({ session }) {
   const [name, setName] = useState('');
+  const [error, setError] = useState(false);
   const router = useRouter();
   const handleCreate = async () => {
-    const res = await fetcher('/api/create-list', { data: name, session });
+  if(name !== ""){
+      const res = await fetcher('/api/create-list', { data: name, session });
     if (res.id) {
       setName('');
       return router.back();
     }
+  }
+  else{
+    setError(true)
+  }
   };
   return (
     <>
@@ -26,6 +32,7 @@ function CustomList({ session }) {
         <div className='mt-[50px] flex w-[80%] flex-col items-center justify-center space-y-4 rounded-md bg-[#1E1E1E] p-4 shadow-xl md:w-[30%]'>
           <h2 className='whitespace-nowrap text-xl'>Create Custom List</h2>
           <div className='flex w-full flex-col space-y-4'>
+        {error && <p className="mt-2 mb-1 text-red-300 text-sm">Name is required!</p>}
             <Input
               placeholder='Custom list name'
               value={name}

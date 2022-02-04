@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 function Search() {
   const [title, setTitle] = useState('');
+   const [error, setError] = useState(false);
   const router = useRouter();
   const genre = router.query.genre;
   const handleSearch = (e: {
@@ -11,8 +12,13 @@ function Search() {
     setTitle(e.target.value);
   };
   const handleSearchBtn = () => {
-    router.push(`/?genre=${genre}&search=${title}`);
+    if(title !== ""){
+      router.push(`/?genre=${genre}&search=${title}`);
     setTitle('');
+    }
+    else{
+      setError(true)
+    }
   };
   return (
     <div className='flex w-full items-center justify-center py-10'>
