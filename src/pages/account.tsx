@@ -218,7 +218,96 @@ function Account({ session, favorite, watchlist, customLists }: props) {
                 </div>
               ) : (
                 <div className='flex items-center justify-center py-2 text-sm'>
-                  <p>Create your custom lists</p>
+                  <p>Create your custom list</p>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className='mt-10 flex h-auto max-h-[250px] w-full flex-col items-center  overflow-y-scroll rounded-md bg-[#161B22] shadow-md scrollbar-hide'>
+            <div className='relative flex w-full flex-col items-center justify-center'>
+              <div className='sticky left-0 top-0 z-50 flex w-full items-center justify-between bg-[#161B22] px-2 py-2 shadow-md '>
+                <h2 className='text-lg'>Shared Lists</h2>
+                <div
+                  className='cursor-pointer'
+                  onClick={() => router.push('/create-customlist')}
+                >
+                  <PlusCircleIcon className='h-6 text-[#316C85] hover:text-white' />
+                </div>
+              </div>
+              {cLists.length > 0 ? (
+                <div
+                  className='mt-1 mb-2 w-full px-3'
+                  onClick={() => {
+                    if (activeDots) {
+                      setActiveDots(false);
+                    }
+                  }}
+                >
+                  {cLists.map(
+                    (item: {
+                      id: string;
+                      name:
+                        | boolean
+                        | React.ReactChild
+                        | React.ReactFragment
+                        | React.ReactPortal;
+                      movies: any[];
+                    }) => {
+                      return (
+                        <div
+                          key={item.id}
+                          className='flex w-full items-center justify-between'
+                          onClick={() => {
+                            if (activeDots) {
+                              setActiveDots(false);
+                            }
+                          }}
+                        >
+                          <div
+                            onClick={() =>
+                              handleListClick(item.id, item.movies)
+                            }
+                            className={
+                              clikedList && id === item.id
+                                ? 'relative my-1 flex h-[30px] w-full flex-grow cursor-pointer items-center justify-between rounded-l-md bg-[#132b35] py-2 pl-2 text-white'
+                                : 'relative my-1 flex h-[30px] w-full cursor-pointer items-center justify-between rounded-l-md bg-[#1F2933] py-2 pl-2 text-gray-400 hover:bg-[#132b35] hover:text-white'
+                            }
+                          >
+                            <div className='flex flex-grow items-center justify-start'>
+                              <p className='text-base'>{item.name}</p>
+                            </div>
+                          </div>
+
+                          <div
+                            className='relative flex h-[30px] w-1/12 cursor-pointer items-center justify-between rounded-r-md bg-[#132b35] py-3 pl-2 text-white'
+                            onClick={() => handleDots(item.id, item.movies)}
+                          >
+                            <DotsVerticalIcon className='h-5' />
+                            {activeDots && item.id === did ? (
+                              <div className='absolute top-0 right-0 z-30 m-1 mt-3 mr-4 h-fit space-y-1 rounded-md bg-[#333f4b] py-2 px-2 shadow-md '>
+                                <div className='w-full px-1 py-1 hover:bg-[#202830]'>
+                                  <p>Share</p>
+                                </div>
+                                <div className='border-2'></div>
+                                <div
+                                  className='w-full  px-1 py-1 hover:bg-[#202830]'
+                                  onClick={() => deleteList(item.id)}
+                                >
+                                  <p>Delete</p>
+                                </div>
+                              </div>
+                            ) : (
+                              ''
+                            )}
+                          </div>
+                        </div>
+                      );
+                    }
+                  )}
+                </div>
+              ) : (
+                <div className='flex items-center justify-center py-2 text-sm'>
+                  <p>Create your custom list</p>
                 </div>
               )}
             </div>
