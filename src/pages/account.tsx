@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DotsVerticalIcon, PlusCircleIcon } from '@heroicons/react/outline';
-import { Button } from '@mui/material';
+// import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Button, IconButton, Menu, MenuItem } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { getSession, GetSessionParams, signOut } from 'next-auth/react';
@@ -99,6 +100,17 @@ function Account({ session, favorite, watchlist, customLists }: props) {
       });
     }
   };
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const options = ['Share', 'Delete'];
+
+  const ITEM_HEIGHT = 48;
   return (
     <>
       <Seo templateTitle='Account' />
@@ -278,7 +290,7 @@ function Account({ session, favorite, watchlist, customLists }: props) {
                             </div>
                           </div>
 
-                          <div
+                          {/* <div
                             className='relative flex h-[30px] w-1/12 cursor-pointer items-center justify-between rounded-r-md bg-[#132b35] py-3 pl-2 text-white'
                             onClick={() => handleDots(item.id, item.movies)}
                           >
@@ -299,7 +311,42 @@ function Account({ session, favorite, watchlist, customLists }: props) {
                             ) : (
                               ''
                             )}
-                          </div>
+                          </div> */}
+                          <IconButton
+                            aria-label='more'
+                            id='long-button'
+                            aria-controls={open ? 'long-menu' : undefined}
+                            aria-expanded={open ? 'true' : undefined}
+                            aria-haspopup='true'
+                            onClick={handleClick}
+                          >
+                            <DotsVerticalIcon />
+                          </IconButton>
+                          <Menu
+                            id='long-menu'
+                            MenuListProps={{
+                              'aria-labelledby': 'long-button',
+                            }}
+                            anchorEl={anchorEl}
+                            open={open}
+                            onClose={handleClose}
+                            PaperProps={{
+                              style: {
+                                maxHeight: ITEM_HEIGHT * 4.5,
+                                width: '20ch',
+                              },
+                            }}
+                          >
+                            {options.map((option) => (
+                              <MenuItem
+                                key={option}
+                                selected={option === 'Pyxis'}
+                                onClick={handleClose}
+                              >
+                                {option}
+                              </MenuItem>
+                            ))}
+                          </Menu>
                         </div>
                       );
                     }
@@ -307,7 +354,7 @@ function Account({ session, favorite, watchlist, customLists }: props) {
                 </div>
               ) : (
                 <div className='flex items-center justify-center py-2 text-sm'>
-                  <p>Create your custom list</p>
+                  <p>No shared lists at the moment</p>
                 </div>
               )}
             </div>
