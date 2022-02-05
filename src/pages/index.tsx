@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { getSession } from 'next-auth/react';
 import * as React from 'react';
+import { Capitalize } from 'utils/Capitalize';
 import request from 'utils/request';
 
 import prisma from '@/lib/prisma';
@@ -51,15 +52,15 @@ export async function getServerSideProps(context: any) {
     }`
   );
 
-  const Capitalize = (mySentence: string) => {
-    const words = mySentence.split(' ');
+  // const Capitalize = (mySentence: string) => {
+  //   const words = mySentence.split(' ');
 
-    for (let i = 0; i < words.length; i++) {
-      words[i] = words[i][0].toUpperCase() + words[i].substr(1);
-    }
+  //   for (let i = 0; i < words.length; i++) {
+  //     words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+  //   }
 
-    return words.join(' ');
-  };
+  //   return words.join(' ');
+  // };
   const searchedObj: any = [];
   const results = await requests.json();
   if (search) {

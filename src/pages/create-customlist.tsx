@@ -2,6 +2,7 @@ import { Button, Input } from '@mui/material';
 import { useRouter } from 'next/router';
 import { getSession, GetSessionParams } from 'next-auth/react';
 import React, { useState } from 'react';
+import { Capitalize } from 'utils/Capitalize';
 import { fetcher } from 'utils/fetcher';
 
 import Header from '@/components/layout/Header';
@@ -13,7 +14,10 @@ function CustomList({ session }) {
   const router = useRouter();
   const handleCreate = async () => {
     if (name !== '') {
-      const res = await fetcher('/api/create-list', { data: name, session });
+      const res = await fetcher('/api/create-list', {
+        data: Capitalize(name),
+        session,
+      });
       if (res.id) {
         setName('');
         return router.back();
