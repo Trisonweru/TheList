@@ -195,7 +195,7 @@ function Account({ session, favorite, watchlist, customLists }: props) {
                           >
                             <DotsVerticalIcon className='h-5' />
                             {activeDots && item.id === did ? (
-                              <div className='absolute top-0 right-0 z-50 m-1 mt-3 mr-4 h-fit space-y-1 rounded-md bg-[#333f4b] py-2 px-2 shadow-md '>
+                              <div className='absolute top-0 right-0 z-30 m-1 mt-3 mr-4 h-fit space-y-1 rounded-md bg-[#333f4b] py-2 px-2 shadow-md '>
                                 <div className='w-full px-1 py-1 hover:bg-[#202830]'>
                                   <p>Share</p>
                                 </div>
