@@ -76,7 +76,7 @@ function Account({
   const [sharedClicked, setSharedClicked] = useState(false);
 
   const handleSharedListClick = (id: string, movies: any[]) => {
-    setSharedMovies([...movies].reverse());
+    setSharedMovies([...movies]);
     setSharedClicked(true);
     setClickedWatchList(false);
     setClickedFavorite(false);
@@ -566,6 +566,7 @@ export const getServerSideProps = async (ctx: GetSessionParams | undefined) => {
     where: {
       to: session.user.email,
     },
+    orderBy: { id: 'desc' },
     include: {
       list: {
         include: {
@@ -574,7 +575,6 @@ export const getServerSideProps = async (ctx: GetSessionParams | undefined) => {
         },
       },
     },
-    orderBy: { id: 'desc' },
   });
 
   return {
