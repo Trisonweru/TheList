@@ -2,6 +2,7 @@
 import { DotsVerticalIcon, PlusCircleIcon } from '@heroicons/react/outline';
 // import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {
+  Avatar,
   Box,
   Button,
   FormLabel,
@@ -28,8 +29,15 @@ interface props {
   favorite: any;
   watchlist: any;
   customLists: any;
+  sharedLists: any;
 }
-function Account({ session, favorite, watchlist, customLists }: props) {
+function Account({
+  session,
+  favorite,
+  watchlist,
+  customLists,
+  sharedLists,
+}: props) {
   const [clickedFavorite, setClickedFavorite] = useState(false);
   const [clickedWatchList, setClickedWatchList] = useState(true);
   const [fav, setFav] = useState([...favorite]);
@@ -38,9 +46,10 @@ function Account({ session, favorite, watchlist, customLists }: props) {
   const [clickedMovies, setClickedMovies] = useState([]);
   const [id, setId] = useState('');
   const [listId, setListId] = useState('');
-  const [did, setDid] = useState('');
-  const [activeDots, setActiveDots] = useState(false);
+  const [sharedListId, setSharedListId] = useState('');
   const [cLists, setCLists] = useState([...customLists]);
+  const [shared, setShared] = useState([...sharedLists]);
+  const [sharedMovies, setSharedMovies] = useState([]);
 
   const router = useRouter();
 
@@ -53,6 +62,7 @@ function Account({ session, favorite, watchlist, customLists }: props) {
     setClickedWatchList(true);
     setClickedFavorite(false);
     setClickedList(false);
+    setSharedClicked(false);
   };
 
   const handleListClick = (id: string, movies: any[]) => {
@@ -61,9 +71,17 @@ function Account({ session, favorite, watchlist, customLists }: props) {
     setId(id);
     setClickedWatchList(false);
     setClickedFavorite(false);
-    if (activeDots) {
-      setActiveDots(false);
-    }
+    setSharedClicked(false);
+  };
+  const [sharedClicked, setSharedClicked] = useState(false);
+
+  const handleSharedListClick = (id: string, movies: any[]) => {
+    setSharedMovies([...movies].reverse());
+    setSharedClicked(true);
+    setClickedWatchList(false);
+    setClickedFavorite(false);
+    setClickedList(false);
+    setSharedListId(id);
   };
 
   const onDeleteItem = (item: any, type: any) => {
@@ -94,22 +112,7 @@ function Account({ session, favorite, watchlist, customLists }: props) {
       });
     }
   };
-  // const handleDots = (id: string, movies: any[]) => {
-  //   setDid(id);
-  //   setActiveDots(true);
-  //   handleListClick(id, movies);
-  // };
-  // const deleteList = async (id: string) => {
-  //   const res = await fetcher('/api/deletelist', { data: id, session });
-  //   if (res.id) {
-  //     cLists.map((item, index) => {
-  //       if (item.id === res.id) {
-  //         cLists.splice(index, 1);
-  //         setCLists([...cLists]);
-  //       }
-  //     });
-  //   }
-  // };
+
   // Modal item
   const style = {
     position: 'absolute' as const,
@@ -183,14 +186,7 @@ function Account({ session, favorite, watchlist, customLists }: props) {
     <>
       <Seo templateTitle='Account' />
       <Header disp={true} />
-      <div
-        onClick={() => {
-          if (activeDots) {
-            setActiveDots(false);
-          }
-        }}
-        className='flex min-h-screen flex-col items-center justify-center sm:flex-row sm:items-start sm:pr-4 '
-      >
+      <div className='flex min-h-screen flex-col items-center justify-center sm:flex-row sm:items-start sm:pr-4 '>
         <div className='mt-10 ml-4 mr-4 flex w-[80%] flex-wrap items-center justify-between rounded-md sm:mt-0 xl:w-1/4 '>
           <div className='flex w-full flex-wrap items-center justify-between rounded-md bg-[#161B22] p-4  shadow-md'>
             <div className='flex items-center space-x-4'>
@@ -226,14 +222,7 @@ function Account({ session, favorite, watchlist, customLists }: props) {
                 </div>
               </div>
               {cLists.length > 0 ? (
-                <div
-                  className='mt-1 mb-2 w-full px-3'
-                  onClick={() => {
-                    if (activeDots) {
-                      setActiveDots(false);
-                    }
-                  }}
-                >
+                <div className='mt-1 mb-2 w-full px-3'>
                   {cLists.map(
                     (item: {
                       id: string;
@@ -248,11 +237,6 @@ function Account({ session, favorite, watchlist, customLists }: props) {
                         <div
                           key={item.id}
                           className='flex w-full items-center justify-between'
-                          onClick={() => {
-                            if (activeDots) {
-                              setActiveDots(false);
-                            }
-                          }}
                         >
                           <div
                             onClick={() =>
@@ -319,88 +303,41 @@ function Account({ session, favorite, watchlist, customLists }: props) {
               <div className='sticky left-0 top-0 z-50 flex w-full items-center justify-between bg-[#161B22] px-2 py-2 shadow-md '>
                 <h2 className='text-lg'>Shared Lists</h2>
               </div>
-              {cLists.length > 0 ? (
-                <div
-                  className='mt-1 mb-2 w-full px-3'
-                  onClick={() => {
-                    if (activeDots) {
-                      setActiveDots(false);
-                    }
-                  }}
-                >
-                  {cLists.map(
-                    (item: {
-                      id: string;
-                      name:
-                        | boolean
-                        | React.ReactChild
-                        | React.ReactFragment
-                        | React.ReactPortal;
-                      movies: any[];
-                    }) => {
-                      return (
+              {shared.length > 0 ? (
+                <div className='mt-1 mb-2 w-full px-3'>
+                  {shared.map((item) => {
+                    return (
+                      <div
+                        key={item.id}
+                        className='flex w-full items-center justify-between'
+                      >
                         <div
-                          key={item.id}
-                          className='flex w-full items-center justify-between'
-                          onClick={() => {
-                            if (activeDots) {
-                              setActiveDots(false);
-                            }
-                          }}
+                          onClick={() =>
+                            handleSharedListClick(item.id, item.list.movies)
+                          }
+                          className={
+                            sharedClicked && sharedListId === item.id
+                              ? 'relative my-1 flex h-[50px] w-full flex-grow cursor-pointer items-center justify-between rounded-l-md bg-[#132b35] py-2 pl-2 text-white'
+                              : 'relative my-1 flex h-[50px] w-full cursor-pointer items-center justify-between rounded-l-md bg-[#1F2933] py-2 pl-2 text-gray-400 hover:bg-[#132b35] hover:text-white'
+                          }
                         >
-                          <div
-                            onClick={() =>
-                              handleListClick(item.id, item.movies)
-                            }
-                            className={
-                              clikedList && id === item.id
-                                ? 'relative my-1 flex h-[30px] w-full flex-grow cursor-pointer items-center justify-between rounded-l-md bg-[#132b35] py-2 pl-2 text-white'
-                                : 'relative my-1 flex h-[30px] w-full cursor-pointer items-center justify-between rounded-l-md bg-[#1F2933] py-2 pl-2 text-gray-400 hover:bg-[#132b35] hover:text-white'
-                            }
-                          >
-                            <div className='flex flex-grow items-center justify-start'>
-                              <p className='text-base'>{item.name}</p>
+                          <div className='flex flex-grow  items-center justify-start space-x-2'>
+                            <div>
+                              <Avatar
+                                alt={item.list.user.name}
+                                src={item.list.user.image}
+                                sx={{ width: 40, height: 40 }}
+                              />
+                            </div>
+                            <div>
+                              <p className='text-base font-bold'>{item.from}</p>
+                              <p className='text-base'> ~ {item.list.name}</p>
                             </div>
                           </div>
-                          <IconButton
-                            aria-label='more'
-                            id='long-button'
-                            aria-controls={open ? 'long-menu' : undefined}
-                            aria-expanded={open ? 'true' : undefined}
-                            aria-haspopup='true'
-                            onClick={(e) => handleClick(e, item.id)}
-                          >
-                            <DotsVerticalIcon className='h-5' />
-                          </IconButton>
-                          <Menu
-                            id='long-menu'
-                            MenuListProps={{
-                              'aria-labelledby': 'long-button',
-                            }}
-                            anchorEl={anchorEl}
-                            open={open}
-                            onClose={handleClose}
-                            PaperProps={{
-                              style: {
-                                maxHeight: ITEM_HEIGHT * 4.5,
-                                width: '10ch',
-                              },
-                            }}
-                          >
-                            {options.map((option) => (
-                              <MenuItem
-                                key={option}
-                                selected={option === 'Share'}
-                                onClick={() => handleClose(item.id, option)}
-                              >
-                                {option}
-                              </MenuItem>
-                            ))}
-                          </Menu>
                         </div>
-                      );
-                    }
-                  )}
+                      </div>
+                    );
+                  })}
                 </div>
               ) : (
                 <div className='flex items-center justify-center py-2 text-sm'>
@@ -410,7 +347,7 @@ function Account({ session, favorite, watchlist, customLists }: props) {
             </div>
           </div>
         </div>
-        {!clikedList ? (
+        {clickedWatchList || clickedFavorite ? (
           <div className='mt-10 mb-10 flex w-[80%] flex-col items-center justify-between rounded-md bg-[#161B22] p-4 shadow-md sm:mt-0 sm:w-3/4 sm:flex-grow'>
             <div className='flex w-full justify-between space-x-4 p-2'>
               <div
@@ -464,7 +401,51 @@ function Account({ session, favorite, watchlist, customLists }: props) {
               <div className='mt-4'>Add movies to your list.</div>
             )}
           </div>
-        ) : (
+        ) : sharedClicked ? (
+          <div className='mt-10 mb-10 flex w-[80%] flex-col items-center justify-between rounded-md bg-[#161B22] p-4 shadow-md sm:mt-0 sm:w-3/4 sm:flex-grow'>
+            <div className='flex w-full justify-between space-x-4 p-2'>
+              <div
+                className={
+                  clickedWatchList
+                    ? 'flex w-1/2 cursor-pointer items-center justify-center rounded-md bg-[#1F2933] p-2 text-white '
+                    : 'flex w-1/2 cursor-pointer items-center justify-center rounded-md p-2 text-gray-400 hover:bg-[#1F2933] active:bg-[#132b35] '
+                }
+                onClick={handleWatchList}
+              >
+                Watchlist
+              </div>
+              <div
+                className={
+                  clickedFavorite
+                    ? 'flex w-1/2 cursor-pointer items-center justify-center rounded-md bg-[#1F2933] p-2 text-white '
+                    : 'flex w-1/2 cursor-pointer items-center  justify-center rounded-md p-2 text-gray-400 hover:bg-[#1F2933] active:bg-[#132b35] '
+                }
+                onClick={handleFav}
+              >
+                Favorite
+              </div>
+            </div>
+
+            {sharedMovies.length > 0 ? (
+              <div className='mt-6 flex w-full flex-col items-center space-y-6'>
+                {sharedClicked &&
+                  sharedMovies.map(
+                    (item: { id: React.Key | null | undefined }) => (
+                      <DataCard
+                        data={item}
+                        key={item.id}
+                        session={session}
+                        type='shared'
+                        onListDeleteItem={onListDeleteItem}
+                      />
+                    )
+                  )}
+              </div>
+            ) : (
+              <div className='mt-4'>No shared movies.</div>
+            )}
+          </div>
+        ) : clikedList ? (
           <div className='mt-10 mb-10 flex w-[80%] flex-col items-center justify-between rounded-md bg-[#161B22] p-4 shadow-md sm:mt-0 sm:w-3/4 sm:flex-grow'>
             <div className='flex w-full justify-between space-x-4 p-2'>
               <div
@@ -508,6 +489,8 @@ function Account({ session, favorite, watchlist, customLists }: props) {
               <div className='mt-4'>Add movies to your list.</div>
             )}
           </div>
+        ) : (
+          ''
         )}
       </div>
       <div>
@@ -552,9 +535,7 @@ function Account({ session, favorite, watchlist, customLists }: props) {
     </>
   );
 }
-
 export default Account;
-
 export const getServerSideProps = async (ctx: GetSessionParams | undefined) => {
   const session = await getSession(ctx);
   if (!session) {
@@ -575,8 +556,23 @@ export const getServerSideProps = async (ctx: GetSessionParams | undefined) => {
   });
   const lists = await prisma?.customList.findMany({
     where: { user: session.user },
+    orderBy: { id: 'desc' },
     include: {
       movies: true,
+    },
+  });
+
+  const shared = await prisma?.sharedList.findMany({
+    where: {
+      to: session.user.email,
+    },
+    include: {
+      list: {
+        include: {
+          movies: true,
+          user: true,
+        },
+      },
     },
     orderBy: { id: 'desc' },
   });
@@ -587,6 +583,7 @@ export const getServerSideProps = async (ctx: GetSessionParams | undefined) => {
       favorite: favorite,
       watchlist: watchlist,
       customLists: lists,
+      sharedLists: shared,
     },
   };
 };

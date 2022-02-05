@@ -1,7 +1,6 @@
 /* eslint-disable unused-imports/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
-import { Button } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -105,17 +104,15 @@ function DataCard({ data, session, type, onDelete, onListDeleteItem }: props) {
                 Watched
               </button>
             )}
-            <Button
-              onClick={
-                type === 'watchlist'
-                  ? handleDelete
-                  : type === 'customlist'
-                  ? handleListDeleteItem
-                  : null
-              }
-            >
-              Delete
-            </Button>
+            {type === 'shared' && (
+              <button
+                disabled={true}
+                className='rounded-md bg-[#1F2933] px-6 py-1.5 text-[#316c85]'
+                onClick={handleListItemWatched}
+              >
+                {wcthd ? 'Watched' : 'Not watched'}
+              </button>
+            )}
           </div>
         </div>
       </div>

@@ -18,6 +18,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         .status(405)
         .json({ status: 403, message: 'Not Authenticated' });
     }
+    const user = prisma.user.findFirst({
+      where: {
+        email: data.email,
+      },
+    });
+    if (!user) {
+      return res.status(400).json({ status: 403, message: 'Not a user' });
+    }
     const sharedItem = await prisma?.sharedList.create({
       data: {
         from: session.user.email,
