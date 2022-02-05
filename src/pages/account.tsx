@@ -1,7 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DotsVerticalIcon, PlusCircleIcon } from '@heroicons/react/outline';
 // import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Button, IconButton, Menu, MenuItem } from '@mui/material';
+import {
+  Box,
+  Button,
+  FormLabel,
+  IconButton,
+  Input,
+  Menu,
+  MenuItem,
+  Modal,
+} from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { getSession, GetSessionParams, signOut } from 'next-auth/react';
@@ -28,6 +37,7 @@ function Account({ session, favorite, watchlist, customLists }: props) {
   const [clikedList, setClickedList] = useState(false);
   const [clickedMovies, setClickedMovies] = useState([]);
   const [id, setId] = useState('');
+  const [listId, setListId] = useState('');
   const [did, setDid] = useState('');
   const [activeDots, setActiveDots] = useState(false);
   const [cLists, setCLists] = useState([...customLists]);
@@ -84,28 +94,86 @@ function Account({ session, favorite, watchlist, customLists }: props) {
       });
     }
   };
-  const handleDots = (id: string, movies: any[]) => {
-    setDid(id);
-    setActiveDots(true);
-    handleListClick(id, movies);
+  // const handleDots = (id: string, movies: any[]) => {
+  //   setDid(id);
+  //   setActiveDots(true);
+  //   handleListClick(id, movies);
+  // };
+  // const deleteList = async (id: string) => {
+  //   const res = await fetcher('/api/deletelist', { data: id, session });
+  //   if (res.id) {
+  //     cLists.map((item, index) => {
+  //       if (item.id === res.id) {
+  //         cLists.splice(index, 1);
+  //         setCLists([...cLists]);
+  //       }
+  //     });
+  //   }
+  // };
+  // Modal item
+  const style = {
+    position: 'absolute' as const,
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
   };
-  const deleteList = async (id: string) => {
-    const res = await fetcher('/api/deletelist', { data: id, session });
-    if (res.id) {
-      cLists.map((item, index) => {
-        if (item.id === res.id) {
-          cLists.splice(index, 1);
-          setCLists([...cLists]);
-        }
+  const [openModal, setModalOpen] = React.useState(false);
+  const handleModalOpen = () => setModalOpen(true);
+  const handleModalClose = () => setModalOpen(false);
+
+  const [to, setTo] = useState('');
+  const [errorTo, setErrorTo] = useState(false);
+  const [sameError, setSameError] = useState(false);
+
+  const handleCreate = async () => {
+    if (to !== '') {
+      const res = await fetcher('/api/shared-list', {
+        data: {
+          listId: listId,
+          to: to,
+        },
+        session,
       });
+      if (res.id) {
+        setTo('');
+        handleModalClose();
+      }
+    } else {
+      setErrorTo(true);
+      setTimeout(() => setErrorTo(false), 5000);
+    }
+    if (session.user.email === to) {
+      setSameError(true);
+      setTimeout(() => setSameError(false), 5000);
     }
   };
+  //list items popover
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>, id: string) => {
     setAnchorEl(event.currentTarget);
+    setListId(id);
   };
-  const handleClose = () => {
+  const handleClose = async (id: string, option: string) => {
+    if (option === 'Delete') {
+      const res = await fetcher('/api/deletelist', { data: id, session });
+      if (res.id) {
+        cLists.map((item, index) => {
+          if (item.id === res.id) {
+            cLists.splice(index, 1);
+            setCLists([...cLists]);
+          }
+        });
+      }
+    }
+    if (option === 'Share') {
+      handleModalOpen();
+    }
     setAnchorEl(null);
   };
   const options = ['Share', 'Delete'];
@@ -200,29 +268,40 @@ function Account({ session, favorite, watchlist, customLists }: props) {
                               <p className='text-base'>{item.name}</p>
                             </div>
                           </div>
-
-                          <div
-                            className='relative flex h-[30px] w-1/12 cursor-pointer items-center justify-between rounded-r-md bg-[#132b35] py-3 pl-2 text-white'
-                            onClick={() => handleDots(item.id, item.movies)}
+                          <IconButton
+                            aria-label='more'
+                            id='long-button'
+                            aria-controls={open ? 'long-menu' : undefined}
+                            aria-expanded={open ? 'true' : undefined}
+                            aria-haspopup='true'
+                            onClick={(e) => handleClick(e, item.id)}
                           >
                             <DotsVerticalIcon className='h-5' />
-                            {activeDots && item.id === did ? (
-                              <div className='absolute top-0 right-0 z-30 m-1 mt-3 mr-4 h-fit space-y-1 rounded-md bg-[#333f4b] py-2 px-2 shadow-md '>
-                                <div className='w-full px-1 py-1 hover:bg-[#202830]'>
-                                  <p>Share</p>
-                                </div>
-                                <div className='border-2'></div>
-                                <div
-                                  className='w-full  px-1 py-1 hover:bg-[#202830]'
-                                  onClick={() => deleteList(item.id)}
-                                >
-                                  <p>Delete</p>
-                                </div>
-                              </div>
-                            ) : (
-                              ''
-                            )}
-                          </div>
+                          </IconButton>
+                          <Menu
+                            id='long-menu'
+                            MenuListProps={{
+                              'aria-labelledby': 'long-button',
+                            }}
+                            anchorEl={anchorEl}
+                            open={open}
+                            onClose={handleClose}
+                            PaperProps={{
+                              style: {
+                                maxHeight: ITEM_HEIGHT * 4.5,
+                                width: '10ch',
+                              },
+                            }}
+                          >
+                            {options.map((option) => (
+                              <MenuItem
+                                key={option}
+                                onClick={() => handleClose(item.id, option)}
+                              >
+                                {option}
+                              </MenuItem>
+                            ))}
+                          </Menu>
                         </div>
                       );
                     }
@@ -239,12 +318,6 @@ function Account({ session, favorite, watchlist, customLists }: props) {
             <div className='relative flex w-full flex-col items-center justify-center'>
               <div className='sticky left-0 top-0 z-50 flex w-full items-center justify-between bg-[#161B22] px-2 py-2 shadow-md '>
                 <h2 className='text-lg'>Shared Lists</h2>
-                <div
-                  className='cursor-pointer'
-                  onClick={() => router.push('/create-customlist')}
-                >
-                  <PlusCircleIcon className='h-6 text-[#316C85] hover:text-white' />
-                </div>
               </div>
               {cLists.length > 0 ? (
                 <div
@@ -289,38 +362,15 @@ function Account({ session, favorite, watchlist, customLists }: props) {
                               <p className='text-base'>{item.name}</p>
                             </div>
                           </div>
-
-                          {/* <div
-                            className='relative flex h-[30px] w-1/12 cursor-pointer items-center justify-between rounded-r-md bg-[#132b35] py-3 pl-2 text-white'
-                            onClick={() => handleDots(item.id, item.movies)}
-                          >
-                            <DotsVerticalIcon className='h-5' />
-                            {activeDots && item.id === did ? (
-                              <div className='absolute top-0 right-0 z-30 m-1 mt-3 mr-4 h-fit space-y-1 rounded-md bg-[#333f4b] py-2 px-2 shadow-md '>
-                                <div className='w-full px-1 py-1 hover:bg-[#202830]'>
-                                  <p>Share</p>
-                                </div>
-                                <div className='border-2'></div>
-                                <div
-                                  className='w-full  px-1 py-1 hover:bg-[#202830]'
-                                  onClick={() => deleteList(item.id)}
-                                >
-                                  <p>Delete</p>
-                                </div>
-                              </div>
-                            ) : (
-                              ''
-                            )}
-                          </div> */}
                           <IconButton
                             aria-label='more'
                             id='long-button'
                             aria-controls={open ? 'long-menu' : undefined}
                             aria-expanded={open ? 'true' : undefined}
                             aria-haspopup='true'
-                            onClick={handleClick}
+                            onClick={(e) => handleClick(e, item.id)}
                           >
-                            <DotsVerticalIcon />
+                            <DotsVerticalIcon className='h-5' />
                           </IconButton>
                           <Menu
                             id='long-menu'
@@ -333,15 +383,15 @@ function Account({ session, favorite, watchlist, customLists }: props) {
                             PaperProps={{
                               style: {
                                 maxHeight: ITEM_HEIGHT * 4.5,
-                                width: '20ch',
+                                width: '10ch',
                               },
                             }}
                           >
                             {options.map((option) => (
                               <MenuItem
                                 key={option}
-                                selected={option === 'Pyxis'}
-                                onClick={handleClose}
+                                selected={option === 'Share'}
+                                onClick={() => handleClose(item.id, option)}
                               >
                                 {option}
                               </MenuItem>
@@ -460,6 +510,45 @@ function Account({ session, favorite, watchlist, customLists }: props) {
           </div>
         )}
       </div>
+      <div>
+        <Modal
+          open={openModal}
+          onClose={handleModalClose}
+          aria-labelledby='modal-modal-title'
+          aria-describedby='modal-modal-description'
+        >
+          <Box sx={style}>
+            <div className='items center flex flex-col justify-center space-y-4'>
+              {errorTo && (
+                <p
+                  className='mt-2 text-sm text-red-300
+        '
+                >
+                  Receiving email is required!
+                </p>
+              )}
+              {sameError && (
+                <p
+                  className='mt-2 text-sm text-red-300
+        '
+                >
+                  Cannot send to your email!
+                </p>
+              )}
+              <div className='flex flex-col'>
+                <FormLabel>Send to</FormLabel>
+                <Input
+                  placeholder='Email to receive'
+                  value={to}
+                  onChange={(e) => setTo(e.target.value)}
+                />
+              </div>
+
+              <Button onClick={handleCreate}>Share</Button>
+            </div>
+          </Box>
+        </Modal>
+      </div>
     </>
   );
 }
@@ -468,7 +557,14 @@ export default Account;
 
 export const getServerSideProps = async (ctx: GetSessionParams | undefined) => {
   const session = await getSession(ctx);
-  // const prisma = new PrismaClient();
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
   const favorite = await prisma?.favorite.findMany({
     where: { user: session?.user },
     orderBy: { id: 'desc' },
@@ -484,14 +580,7 @@ export const getServerSideProps = async (ctx: GetSessionParams | undefined) => {
     },
     orderBy: { id: 'desc' },
   });
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
+
   return {
     props: {
       session,
