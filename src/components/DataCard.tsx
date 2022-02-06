@@ -1,6 +1,7 @@
 /* eslint-disable unused-imports/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
+import { Button } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -73,12 +74,27 @@ function DataCard({ data, session, type, onDelete, onListDeleteItem }: props) {
           </div>
           <div
             className={
-              type === 'watchlist' || type === 'customlist'
+              type === 'watchlist' ||
+              type === 'customlist' ||
+              type === 'favorite'
                 ? 'flex w-full items-center justify-between'
                 : 'flex w-full items-center justify-end'
             }
           >
             {type === 'watchlist' && (
+              <button
+                disabled={wcthd ? true : false}
+                className={
+                  wcthd
+                    ? 'rounded-md bg-[#1F2933] px-6 py-1.5 text-[#316c85]'
+                    : 'rounded-md bg-[#316c85] px-6 py-1.5'
+                }
+                onClick={handleWatched}
+              >
+                Watched
+              </button>
+            )}
+            {type === 'favorite' && (
               <button
                 disabled={wcthd ? true : false}
                 className={
@@ -112,6 +128,17 @@ function DataCard({ data, session, type, onDelete, onListDeleteItem }: props) {
               >
                 {wcthd ? 'Watched' : 'Not watched'}
               </button>
+            )}
+            {type === 'watchlist' ||
+              (type === 'favorite' && (
+                <div>
+                  <Button onClick={handleDelete}>Delete</Button>
+                </div>
+              ))}
+            {type === 'customlist' && (
+              <div>
+                <Button onClick={handleListDeleteItem}>Delete</Button>
+              </div>
             )}
           </div>
         </div>

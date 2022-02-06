@@ -20,7 +20,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
     const createdItem = await prisma.customListMovies.create({
       data: {
-        title: data.title,
+        title: data.title || data.original_name,
         image: data.backdrop_path || data.poster_path,
         overview: data.overview,
         watched: data.watched,
