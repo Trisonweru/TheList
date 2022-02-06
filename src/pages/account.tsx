@@ -240,7 +240,7 @@ function Account({
                         >
                           <div
                             onClick={() =>
-                              handleListClick(item.id, item.movies)
+                              handleListClick(item.id, item.movies.reverse())
                             }
                             className={
                               clikedList && id === item.id
@@ -556,17 +556,16 @@ export const getServerSideProps = async (ctx: GetSessionParams | undefined) => {
   });
   const lists = await prisma?.customList.findMany({
     where: { user: session.user },
-    orderBy: { id: 'desc' },
     include: {
       movies: true,
     },
+    orderBy: { id: 'desc' },
   });
 
   const shared = await prisma?.sharedList.findMany({
     where: {
       to: session.user.email,
     },
-    orderBy: { id: 'desc' },
     include: {
       list: {
         include: {
@@ -575,6 +574,7 @@ export const getServerSideProps = async (ctx: GetSessionParams | undefined) => {
         },
       },
     },
+    orderBy: { id: 'desc' },
   });
 
   return {
