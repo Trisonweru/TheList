@@ -129,12 +129,13 @@ function DataCard({ data, session, type, onDelete, onListDeleteItem }: props) {
                 {wcthd ? 'Watched' : 'Not watched'}
               </button>
             )}
-            {type === 'watchlist' ||
-              (type === 'favorite' && (
-                <div>
-                  <Button onClick={handleDelete}>Delete</Button>
-                </div>
-              ))}
+            {type === 'watchlist' || type === 'favorite' ? (
+              <div>
+                <Button onClick={handleDelete}>Delete</Button>
+              </div>
+            ) : (
+              ''
+            )}
             {type === 'customlist' && (
               <div>
                 <Button onClick={handleListDeleteItem}>Delete</Button>
