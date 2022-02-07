@@ -25,16 +25,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     });
     if (!user) {
       return res.status(400).json({ status: 403, message: 'Not a user' });
+    } else {
+      const sharedItem = await prisma?.sharedList.create({
+        data: {
+          from: session.user.email,
+          to: data.to,
+          listId: data.listId,
+        },
+      });
+      return res.status(200).json(sharedItem);
     }
-    const sharedItem = await prisma?.sharedList.create({
-      data: {
-        from: session.user.email,
-        to: data.to,
-        listId: data.listId,
-      },
-    });
-
-    return res.status(200).json(sharedItem);
   } catch (err) {
     //if any error during the creation proces we catch it and send the error message to the frontend.
     res.status(400).json({ status: 400, message: err.message });
