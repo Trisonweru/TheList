@@ -22,8 +22,11 @@ import { fetcher } from 'utils/fetcher';
 import prisma from '@/lib/prisma';
 
 import DataCard from '@/components/DataCard';
+import Footer from '@/components/layout/footer';
 import Header from '@/components/layout/Header';
 import Seo from '@/components/Seo';
+
+import Notification from '../components/Notification';
 
 interface props {
   session: any;
@@ -176,6 +179,8 @@ function Account({
   const handleSClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElS(event.currentTarget);
   };
+  const [deletedListSuccess, setDeletedListSuccess] = useState(false);
+  const [deletedListError, setDeletedListError] = useState(false);
   const handleClose = async (id: string, option: string) => {
     if (option === 'Delete') {
       const res = await fetcher('/api/deletelist', { data: id, session });
@@ -184,8 +189,13 @@ function Account({
           if (item.id === res.id) {
             cLists.splice(index, 1);
             setCLists([...cLists]);
+            setDeletedListSuccess(true);
+            setTimeout(() => setDeletedListSuccess(false), 5000);
           }
         });
+      } else {
+        setDeletedListError(true);
+        setTimeout(() => setDeletedListError(false), 5000);
       }
     }
     if (option === 'Share') {
@@ -633,7 +643,12 @@ function Account({
             </motion.div>
           </Modal>
         </AnimatePresence>
+        <Notification
+          deletedListSuccess={deletedListSuccess}
+          deletedListError={deletedListError}
+        />
       </div>
+      <Footer />
     </>
   );
 }
@@ -689,47 +704,3 @@ export const getServerSideProps = async (ctx: GetSessionParams | undefined) => {
     },
   };
 };
-
-//  <div
-//               className={
-//                 clickedWatchList
-//                   ? 'flex w-1/2 cursor-pointer items-center justify-center rounded-md bg-[#1F2933] p-2 text-white '
-//                   : 'flex w-1/2 cursor-pointer items-center justify-center rounded-md p-2 text-gray-400 hover:bg-[#1F2933] active:bg-[#132b35] '
-//               }
-//               onClick={handleWatchList}
-//             >
-//               Watchlist
-//             </div>
-//             <div
-//               className={
-//                 clickedFavorite
-//                   ? 'flex w-1/2 cursor-pointer items-center justify-center rounded-md bg-[#1F2933] p-2 text-white '
-//                   : 'flex w-1/2 cursor-pointer items-center  justify-center rounded-md p-2 text-gray-400 hover:bg-[#1F2933] active:bg-[#132b35] '
-//               }
-//               onClick={handleFav}
-//             >
-//               Favorite
-//             </div>
-
-//{
-/* <div
-                className={
-                  clickedWatchList
-                    ? 'flex w-1/2 cursor-pointer items-center justify-center rounded-md bg-[#1F2933] p-2 text-white '
-                    : 'flex w-1/2 cursor-pointer items-center justify-center rounded-md p-2 text-gray-400 hover:bg-[#1F2933] active:bg-[#132b35] '
-                }
-                onClick={handleWatchList}
-              >
-                Watchlist
-              </div>
-              <div
-                className={
-                  clickedFavorite
-                    ? 'flex w-1/2 cursor-pointer items-center justify-center rounded-md bg-[#1F2933] p-2 text-white '
-                    : 'flex w-1/2 cursor-pointer items-center  justify-center rounded-md p-2 text-gray-400 hover:bg-[#1F2933] active:bg-[#132b35] '
-                }
-                onClick={handleFav}
-              >
-                Favorite
-              </div> */
-// }
