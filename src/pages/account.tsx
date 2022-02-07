@@ -3,7 +3,6 @@ import { DotsVerticalIcon, PlusCircleIcon } from '@heroicons/react/outline';
 // import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {
   Avatar,
-  Box,
   Button,
   FormLabel,
   IconButton,
@@ -141,6 +140,7 @@ function Account({
   const [sameError, setSameError] = useState(false);
   const [sharedSuccessful, setSharedSuccessful] = useState(false);
   const [sharedError, setSharedError] = useState(false);
+  const [noneUser, setNoneUser] = useState(false);
 
   const handleCreate = async () => {
     if (to !== '') {
@@ -159,6 +159,8 @@ function Account({
       } else {
         setSharedError(true);
         setTimeout(() => setSharedError(false), 5000);
+        setNoneUser(true);
+        setTimeout(() => setNoneUser(false), 5000);
       }
     } else {
       setErrorTo(true);
@@ -580,73 +582,57 @@ function Account({
             aria-describedby='modal-modal-description'
           >
             <motion.div
-              initial={{
-                scale: 0,
-                opacity: 0,
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-
-                background: 'rgba(18,18,18,0.3)',
-                transform: 'inherit',
-                translateY: '-50%',
-                translateX: '-50%',
-              }}
+              initial={{ y: '-100%', opacity: 0 }}
               animate={{
-                scale: 1,
-                opacity: 1,
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                width: '30%',
-                height: '90%',
-                background: 'rgba(18,18,18,0.1)',
-                transform: 'inherit',
+                y: 0,
                 translateY: '-50%',
                 translateX: '-50%',
+                opacity: 1,
               }}
               transition={{
                 ease: 'easeOut',
                 duration: 1,
               }}
-              exit={{
-                scale: 0,
-                opacity: 0,
-                top: '-50%',
-                left: '-50%',
-              }}
-              className='overflow-y-scroll scrollbar-hide '
+              exit={{ y: '-100%', translateY: 0, translateX: 0, opacity: 0 }}
+              className='absolute top-[50%] left-[50%] flex h-auto max-h-[90%] w-[90%] translate-y-[-50%] translate-x-[-50%] transform flex-col items-center justify-center overflow-y-scroll border bg-[rgba(0,0,0,1)] px-2 pt-2  pb-2  shadow-xl scrollbar-hide lg:w-[25%]'
             >
-              <Box sx={style}>
-                <div className='items center flex flex-col justify-center space-y-4'>
-                  {errorTo && (
-                    <p
-                      className='mt-2 text-sm text-red-300
+              <h1 className='mb-4 text-2xl'>Share List</h1>
+              <div className='items center flex w-full flex-col justify-center space-y-4'>
+                {errorTo && (
+                  <p
+                    className='mt-2 text-sm text-red-300
         '
-                    >
-                      Receiving email is required!
-                    </p>
-                  )}
-                  {sameError && (
-                    <p
-                      className='mt-2 text-sm text-red-300
+                  >
+                    Receiving email is required!
+                  </p>
+                )}
+                {sameError && (
+                  <p
+                    className='mt-2 text-sm text-red-300
         '
-                    >
-                      Cannot send to your email!
-                    </p>
-                  )}
-                  <div className='flex flex-col'>
-                    <FormLabel>Send to</FormLabel>
-                    <Input
-                      placeholder='Email to receive'
-                      value={to}
-                      onChange={(e) => setTo(e.target.value)}
-                    />
-                  </div>
-
-                  <Button onClick={handleCreate}>Share</Button>
+                  >
+                    Cannot send to your email!
+                  </p>
+                )}
+                {noneUser && (
+                  <p
+                    className='mt-2 text-sm text-red-300
+        '
+                  >
+                    User with the email could not be found!
+                  </p>
+                )}
+                <div className='flex flex-col'>
+                  <FormLabel>Send to</FormLabel>
+                  <Input
+                    placeholder='Email to receive'
+                    value={to}
+                    onChange={(e) => setTo(e.target.value)}
+                  />
                 </div>
-              </Box>
+
+                <Button onClick={handleCreate}>Share</Button>
+              </div>
             </motion.div>
           </Modal>
         </AnimatePresence>
