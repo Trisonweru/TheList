@@ -39,8 +39,8 @@ export default function HomePage({ results, search, customLists }: any) {
           <div className='flex h-full w-full flex-1 flex-col items-center justify-center px-4 '>
             <div className='flex'>
               <motion.h1
-                initial={{ x: '-100%', opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
+                initial={{ y: '-100%', opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
                 transition={{
                   ease: 'easeOut',
                   duration: 2,
