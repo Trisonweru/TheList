@@ -650,13 +650,13 @@ function Account({
             </motion.div>
           </Modal>
         </AnimatePresence>
-        <Notification
-          deletedListSuccess={deletedListSuccess}
-          deletedListError={deletedListError}
-          sharedSuccessful={sharedSuccessful}
-          sharedError={sharedError}
-        />
       </div>
+      <Notification
+        deletedListSuccess={deletedListSuccess}
+        deletedListError={deletedListError}
+        sharedSuccessful={sharedSuccessful}
+        sharedError={sharedError}
+      />
       <Footer />
     </>
   );

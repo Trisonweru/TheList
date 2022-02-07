@@ -20,7 +20,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
     const user = prisma.user.findFirst({
       where: {
-        email: data.email,
+        email: data.to,
       },
     });
     if (!user) {
