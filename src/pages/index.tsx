@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { motion } from 'framer-motion';
 import { getSession } from 'next-auth/react';
 import * as React from 'react';
 import { Capitalize } from 'utils/Capitalize';
@@ -6,6 +7,7 @@ import request from 'utils/request';
 
 import prisma from '@/lib/prisma';
 
+import Footer from '@/components/layout/footer';
 import Header from '@/components/layout/Header';
 import Layout from '@/components/layout/Layout';
 import Nav from '@/components/layout/Nav';
@@ -35,14 +37,24 @@ export default function HomePage({ results, search, customLists }: any) {
             <Header disp={true} />
           </div>
           <div className='flex h-full w-full flex-1 flex-col items-center justify-center px-4 '>
-            <h1 className='max-w-3xl text-center text-3xl sm:text-5xl'>
-              <span className='text-[#3a84a3] '>Create </span> and{' '}
-              <span className='text-[#3a84a3] '>share</span> your{' '}
-              <span className='text-[#3a84a3] '>watchlists </span>
-              with your friends.{' '}
-              <span className='text-[#3a84a3] '>Keep record </span> of what you
-              watch.
-            </h1>
+            <div className='flex'>
+              <motion.h1
+                initial={{ x: '-100%', opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{
+                  ease: 'easeOut',
+                  duration: 2,
+                }}
+                className='max-w-3xl text-center text-3xl sm:text-5xl'
+              >
+                <motion.span className='text-[#3a84a3]  '>Create </motion.span>{' '}
+                and <span className='text-[#3a84a3] '>share</span> your{' '}
+                <span className='text-[#3a84a3] '>watchlists </span>
+                with your friends.{' '}
+                <span className='text-[#3a84a3] '>Keep record </span> of what
+                you watch.
+              </motion.h1>
+            </div>
             <Search />
           </div>
         </div>
@@ -53,6 +65,7 @@ export default function HomePage({ results, search, customLists }: any) {
         results={search.length > 0 ? search : results}
         customLists={customLists}
       />
+      <Footer />
     </Layout>
   );
 }
