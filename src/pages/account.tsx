@@ -12,6 +12,7 @@ import {
   MenuItem,
   Modal,
 } from '@mui/material';
+import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { getSession, GetSessionParams, signOut } from 'next-auth/react';
@@ -560,36 +561,77 @@ function Account({
           aria-labelledby='modal-modal-title'
           aria-describedby='modal-modal-description'
         >
-          <Box sx={style}>
-            <div className='items center flex flex-col justify-center space-y-4'>
-              {errorTo && (
-                <p
-                  className='mt-2 text-sm text-red-300
-        '
-                >
-                  Receiving email is required!
-                </p>
-              )}
-              {sameError && (
-                <p
-                  className='mt-2 text-sm text-red-300
-        '
-                >
-                  Cannot send to your email!
-                </p>
-              )}
-              <div className='flex flex-col'>
-                <FormLabel>Send to</FormLabel>
-                <Input
-                  placeholder='Email to receive'
-                  value={to}
-                  onChange={(e) => setTo(e.target.value)}
-                />
-              </div>
+          <AnimatePresence>
+            <motion.div
+              initial={{
+                scale: 0,
+                opacity: 0,
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
 
-              <Button onClick={handleCreate}>Share</Button>
-            </div>
-          </Box>
+                background: 'rgba(18,18,18,0.3)',
+                transform: 'inherit',
+                translateY: '-50%',
+                translateX: '-50%',
+              }}
+              animate={{
+                scale: 1,
+                opacity: 1,
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                width: '30%',
+                height: '90%',
+                background: 'rgba(18,18,18,0.1)',
+                transform: 'inherit',
+                translateY: '-50%',
+                translateX: '-50%',
+              }}
+              transition={{
+                ease: 'easeOut',
+                duration: 1,
+              }}
+              exit={{
+                scale: 0,
+                opacity: 0,
+                top: '-50%',
+                left: '-50%',
+              }}
+              className='overflow-y-scroll scrollbar-hide '
+            >
+              <Box sx={style}>
+                <div className='items center flex flex-col justify-center space-y-4'>
+                  {errorTo && (
+                    <p
+                      className='mt-2 text-sm text-red-300
+        '
+                    >
+                      Receiving email is required!
+                    </p>
+                  )}
+                  {sameError && (
+                    <p
+                      className='mt-2 text-sm text-red-300
+        '
+                    >
+                      Cannot send to your email!
+                    </p>
+                  )}
+                  <div className='flex flex-col'>
+                    <FormLabel>Send to</FormLabel>
+                    <Input
+                      placeholder='Email to receive'
+                      value={to}
+                      onChange={(e) => setTo(e.target.value)}
+                    />
+                  </div>
+
+                  <Button onClick={handleCreate}>Share</Button>
+                </div>
+              </Box>
+            </motion.div>
+          </AnimatePresence>
         </Modal>
       </div>
     </>

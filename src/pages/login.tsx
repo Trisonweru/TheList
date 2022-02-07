@@ -7,7 +7,7 @@ import Seo from '@/components/Seo';
 function login() {
   return (
     <>
-      <Seo templateTitle='Sign in'/>
+      <Seo templateTitle='Sign in' />
       <GoogleButton />
     </>
   );

@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 
 interface props {
@@ -20,50 +21,104 @@ function Notification({
   showErrorwC,
 }: props) {
   return (
-    <>
+    <AnimatePresence>
       {showSuccessf && (
-        <div className='absolute bottom-0 left-0 right-0 z-50 mb-4 flex w-full justify-end'>
+        <motion.div
+          initial={{ y: '100%', opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            ease: 'easeOut',
+            duration: 1,
+          }}
+          exit={{ y: '100%', opacity: 0 }}
+          className='absolute bottom-0 left-0 right-0 z-50 mb-4 flex w-full justify-end shadow-md'
+        >
           <div className='flex min-h-[50px] max-w-[25%]  items-center justify-between bg-green-500 px-3 shadow-xl sm:max-w-[25%]'>
-            <p>{title} added to your list</p>
+            <p className='text-center'>{title} added to your list</p>
           </div>
-        </div>
+        </motion.div>
       )}
       {showSuccessw && (
-        <div className='absolute bottom-0 left-0 right-0 z-50 mb-4 flex w-full justify-end'>
+        <motion.div
+          initial={{ y: '100%', opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            ease: 'easeOut',
+            duration: 1,
+          }}
+          exit={{ y: '100%', opacity: 0 }}
+          className='absolute bottom-0 left-0 right-0 z-50 mb-4 flex w-full justify-end shadow-md'
+        >
           <div className='flex h-auto min-h-[50px] max-w-[50%]  items-center  justify-between bg-green-500 px-3 shadow-xl sm:max-w-[25%]'>
-            <p>{title} added to your list</p>
+            <p className='text-center'>{title} added to your list</p>
           </div>
-        </div>
+        </motion.div>
       )}
       {showSuccessC && (
-        <div className='absolute bottom-0 left-0 right-0 z-50 mb-4 flex w-full justify-end'>
+        <motion.div
+          initial={{ y: '100%', opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            ease: 'easeOut',
+            duration: 1,
+          }}
+          exit={{ y: '100%', opacity: 0 }}
+          className='absolute bottom-0 left-0 right-0 z-50 mb-4 flex w-full justify-end shadow-md'
+        >
           <div className='flex h-auto min-h-[50px] max-w-[50%]  items-center  justify-between bg-green-500 px-3 shadow-xl sm:max-w-[25%]'>
-            <p>{title} added to your list</p>
+            <p className='text-center'>{title} added to your list</p>
           </div>
-        </div>
+        </motion.div>
       )}
       {showErrorf && (
-        <div className='absolute bottom-0 left-0 right-0 z-50  mb-4 flex w-full justify-end'>
+        <motion.div
+          initial={{ y: '100%', opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            ease: 'easeOut',
+            duration: 1,
+          }}
+          exit={{ y: '100%', opacity: 0 }}
+          className='absolute bottom-0 left-0 right-0 z-50  mb-4 flex w-full justify-end shadow-md'
+        >
           <div className='flex h-auto min-h-[50px] max-w-[50%]  items-center justify-between bg-green-500 px-3 shadow-xl sm:max-w-[25%]'>
-            <p>Could not add to your list</p>
+            <p className='text-center'>Could not add to your list</p>
           </div>
-        </div>
+        </motion.div>
       )}
       {showErrorw && (
-        <div className='absolute bottom-0 left-0 right-0 z-50 mb-4 flex w-full justify-end'>
+        <motion.div
+          initial={{ y: '100%', opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            ease: 'easeOut',
+            duration: 1,
+          }}
+          exit={{ y: '100%', opacity: 0 }}
+          className='absolute bottom-0 left-0 right-0 z-50 mb-4 flex w-full justify-end shadow-md'
+        >
           <div className='flex h-auto min-h-[50px] max-w-[50%] items-center justify-between bg-green-500 px-3 shadow-xl sm:max-w-[25%]'>
-            <p>Could not add to your list</p>
+            <p className='text-center'>Could not add to your list</p>
           </div>
-        </div>
+        </motion.div>
       )}
       {showErrorwC && (
-        <div className='absolute bottom-0 left-0 right-0 z-50 mb-4 flex w-full justify-end'>
+        <motion.div
+          initial={{ y: '100%', opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            ease: 'easeOut',
+            duration: 1,
+          }}
+          exit={{ y: '100%', opacity: 0 }}
+          className='absolute bottom-0 left-0 right-0 z-50 mb-4 flex w-full justify-end shadow-md'
+        >
           <div className='flex h-auto min-h-[50px] max-w-[50%] items-center justify-between bg-green-500 px-3 shadow-xl sm:max-w-[25%]'>
-            <p>Could not add to your list</p>
+            <p className='text-center'>Could not add to your list</p>
           </div>
-        </div>
+        </motion.div>
       )}
-    </>
+    </AnimatePresence>
   );
 }
 
