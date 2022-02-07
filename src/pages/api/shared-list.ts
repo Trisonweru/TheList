@@ -18,11 +18,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         .status(405)
         .json({ status: 403, message: 'Not Authenticated' });
     }
-    const user = prisma.user.findFirst({
+    const user = prisma.user.findUnique({
       where: {
         email: data.to,
       },
     });
+    console.log(user);
     if (!user) {
       return res.status(400).json({ status: 403, message: 'Not a user' });
     } else {
