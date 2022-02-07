@@ -155,8 +155,10 @@ function Account({
         setTo('');
         handleModalClose();
         setSharedSuccessful(true);
+        setTimeout(() => setSharedSuccessful(false), 5000);
       } else {
         setSharedError(true);
+        setTimeout(() => setSharedError(false), 5000);
       }
     } else {
       setErrorTo(true);
