@@ -12,7 +12,7 @@ type props = {
 };
 function Header({ disp }: props) {
   return (
-    <header className=' flex h-auto flex-col items-center justify-between pt-5 sm:flex-row'>
+    <header className=' flex h-auto flex-col items-center justify-between pt-5 pb-5 sm:flex-row'>
       <div className='flex max-w-2xl flex-grow justify-evenly'>
         <HeaderItem title='HOME' Icon={HomeIcon} url='/' />
         <HeaderItem
