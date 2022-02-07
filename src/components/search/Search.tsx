@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 function Search() {
   const [title, setTitle] = useState('');
-   const [error, setError] = useState(false);
+  const [error, setError] = useState(false);
   const router = useRouter();
   const genre = router.query.genre;
   const handleSearch = (e: {
@@ -12,12 +12,11 @@ function Search() {
     setTitle(e.target.value);
   };
   const handleSearchBtn = () => {
-    if(title !== ""){
+    if (title !== '') {
       router.push(`/?genre=${genre}&search=${title}`);
-    setTitle('');
-    }
-    else{
-      setError(true)
+      setTitle('');
+    } else {
+      setError(true);
     }
   };
   return (
@@ -26,12 +25,12 @@ function Search() {
         <input
           type='text'
           className='focus:shadow-outline w-full rounded-l-md px-4 py-2 text-base text-gray-700 focus:border-[#132b35] focus:outline-none'
-          placeholder='Search by title...'
+          placeholder='Search a category...'
           value={title}
           onChange={handleSearch}
         />
         <button
-          className='rounded-r-md border-l bg-[#132b35] px-4 text-white'
+          className='rounded-r-md border-l bg-[#3a84a3] px-4 text-white'
           onClick={handleSearchBtn}
         >
           Search

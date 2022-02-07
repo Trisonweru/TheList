@@ -11,12 +11,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
   // if user, we create the user in the database using prisma create function.
   try {
-    const { data, session } = req.body;
+    const { data, session, type } = req.body;
     if (!session) {
       return res
         .status(405)
         .json({ status: 403, message: 'Not Authenticated' });
     }
+
     const watchedItem = await prisma?.watchList.update({
       where: {
         id: data.id,
@@ -29,6 +30,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(200).json(watchedItem);
   } catch (err) {
     //if any error during the creation proces we catch it and send the error message to the frontend.
-    res.status(400).json({ status: 400, message: 'Something went wrong' });
+    res.status(400).json({ status: 400, message: err.message });
   }
 };

@@ -50,6 +50,7 @@ function Account({
   const [cLists, setCLists] = useState([...customLists]);
   const [shared, setShared] = useState([...sharedLists]);
   const [sharedMovies, setSharedMovies] = useState([]);
+  const [clName, setCLName] = useState('');
 
   const router = useRouter();
 
@@ -65,17 +66,19 @@ function Account({
     setSharedClicked(false);
   };
 
-  const handleListClick = (id: string, movies: any[]) => {
+  const handleListClick = (id: string, name: string, movies: any[]) => {
     setClickedList(true);
     setClickedMovies([...movies]);
     setId(id);
+    setCLName(name);
     setClickedWatchList(false);
     setClickedFavorite(false);
     setSharedClicked(false);
   };
   const [sharedClicked, setSharedClicked] = useState(false);
-
-  const handleSharedListClick = (id: string, movies: any[]) => {
+  const [csName, setCSName] = useState('');
+  const handleSharedListClick = (id: string, name: string, movies: any[]) => {
+    setCSName(name);
     setSharedMovies([...movies]);
     setSharedClicked(true);
     setClickedWatchList(false);
@@ -162,6 +165,16 @@ function Account({
     setAnchorEl(event.currentTarget);
     setListId(id);
   };
+  const [anchorElFw, setAnchorElFw] = React.useState<null | HTMLElement>(null);
+  const openfw = Boolean(anchorElFw);
+  const handleFWClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElFw(event.currentTarget);
+  };
+  const [anchorElS, setAnchorElS] = React.useState<null | HTMLElement>(null);
+  const openS = Boolean(anchorElS);
+  const handleSClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElS(event.currentTarget);
+  };
   const handleClose = async (id: string, option: string) => {
     if (option === 'Delete') {
       const res = await fetcher('/api/deletelist', { data: id, session });
@@ -179,7 +192,26 @@ function Account({
     }
     setAnchorEl(null);
   };
+  const handleFWClose = async (option) => {
+    if (option === 'Watchlist') {
+      handleWatchList();
+    }
+    if (option === 'Favorite') {
+      handleFav();
+    }
+    setAnchorElFw(null);
+  };
+  const handleSClose = async (option) => {
+    if (option === 'Watchlist') {
+      handleWatchList();
+    }
+    if (option === 'Favorite') {
+      handleFav();
+    }
+    setAnchorElS(null);
+  };
   const options = ['Share', 'Delete'];
+  const option2 = ['Watchlist', 'Favorite'];
 
   const ITEM_HEIGHT = 48;
   return (
@@ -224,15 +256,7 @@ function Account({
               {cLists.length > 0 ? (
                 <div className='mt-1 mb-2 w-full px-3'>
                   {cLists.map(
-                    (item: {
-                      id: string;
-                      name:
-                        | boolean
-                        | React.ReactChild
-                        | React.ReactFragment
-                        | React.ReactPortal;
-                      movies: any[];
-                    }) => {
+                    (item: { id: string; name: string; movies: any[] }) => {
                       return (
                         <div
                           key={item.id}
@@ -240,7 +264,11 @@ function Account({
                         >
                           <div
                             onClick={() =>
-                              handleListClick(item.id, item.movies.reverse())
+                              handleListClick(
+                                item.id,
+                                item.name,
+                                item.movies.reverse()
+                              )
                             }
                             className={
                               clikedList && id === item.id
@@ -313,7 +341,11 @@ function Account({
                       >
                         <div
                           onClick={() =>
-                            handleSharedListClick(item.id, item.list.movies)
+                            handleSharedListClick(
+                              item.id,
+                              item.list.name,
+                              item.list.movies
+                            )
                           }
                           className={
                             sharedClicked && sharedListId === item.id
@@ -404,27 +436,41 @@ function Account({
         ) : sharedClicked ? (
           <div className='mt-10 mb-10 flex w-[80%] flex-col items-center justify-between rounded-md bg-[#161B22] p-4 shadow-md sm:mt-0 sm:w-3/4 sm:flex-grow'>
             <div className='flex w-full justify-between space-x-4 p-2'>
-              <div
-                className={
-                  clickedWatchList
-                    ? 'flex w-1/2 cursor-pointer items-center justify-center rounded-md bg-[#1F2933] p-2 text-white '
-                    : 'flex w-1/2 cursor-pointer items-center justify-center rounded-md p-2 text-gray-400 hover:bg-[#1F2933] active:bg-[#132b35] '
-                }
-                onClick={handleWatchList}
-              >
-                Watchlist
+              <div>
+                <h2 className='text-md'>List : {csName}</h2>
               </div>
-              <div
-                className={
-                  clickedFavorite
-                    ? 'flex w-1/2 cursor-pointer items-center justify-center rounded-md bg-[#1F2933] p-2 text-white '
-                    : 'flex w-1/2 cursor-pointer items-center  justify-center rounded-md p-2 text-gray-400 hover:bg-[#1F2933] active:bg-[#132b35] '
-                }
-                onClick={handleFav}
+              <IconButton
+                aria-label='more'
+                id='long-button'
+                aria-controls={openS ? 'long-menu' : undefined}
+                aria-expanded={openS ? 'true' : undefined}
+                aria-haspopup='true'
+                onClick={handleSClick}
               >
-                Favorite
-              </div>
+                <DotsVerticalIcon className='h-5' />
+              </IconButton>
             </div>
+            <Menu
+              id='long-menu'
+              MenuListProps={{
+                'aria-labelledby': 'long-button',
+              }}
+              anchorEl={anchorElS}
+              open={openS}
+              onClose={handleSClose}
+              PaperProps={{
+                style: {
+                  maxHeight: ITEM_HEIGHT * 4.5,
+                  width: '10ch',
+                },
+              }}
+            >
+              {option2.map((option) => (
+                <MenuItem key={option} onClick={() => handleSClose(option)}>
+                  {option}
+                </MenuItem>
+              ))}
+            </Menu>
 
             {sharedMovies.length > 0 ? (
               <div className='mt-6 flex w-full flex-col items-center space-y-6'>
@@ -448,27 +494,41 @@ function Account({
         ) : clikedList ? (
           <div className='mt-10 mb-10 flex w-[80%] flex-col items-center justify-between rounded-md bg-[#161B22] p-4 shadow-md sm:mt-0 sm:w-3/4 sm:flex-grow'>
             <div className='flex w-full justify-between space-x-4 p-2'>
-              <div
-                className={
-                  clickedWatchList
-                    ? 'flex w-1/2 cursor-pointer items-center justify-center rounded-md bg-[#1F2933] p-2 text-white '
-                    : 'flex w-1/2 cursor-pointer items-center justify-center rounded-md p-2 text-gray-400 hover:bg-[#1F2933] active:bg-[#132b35] '
-                }
-                onClick={handleWatchList}
-              >
-                Watchlist
+              <div>
+                <h2 className='text-md'>List : {clName}</h2>
               </div>
-              <div
-                className={
-                  clickedFavorite
-                    ? 'flex w-1/2 cursor-pointer items-center justify-center rounded-md bg-[#1F2933] p-2 text-white '
-                    : 'flex w-1/2 cursor-pointer items-center  justify-center rounded-md p-2 text-gray-400 hover:bg-[#1F2933] active:bg-[#132b35] '
-                }
-                onClick={handleFav}
+              <IconButton
+                aria-label='more'
+                id='long-button'
+                aria-controls={openfw ? 'long-menu' : undefined}
+                aria-expanded={openfw ? 'true' : undefined}
+                aria-haspopup='true'
+                onClick={handleFWClick}
               >
-                Favorite
-              </div>
+                <DotsVerticalIcon className='h-5' />
+              </IconButton>
             </div>
+            <Menu
+              id='long-menu'
+              MenuListProps={{
+                'aria-labelledby': 'long-button',
+              }}
+              anchorEl={anchorElFw}
+              open={openfw}
+              onClose={handleFWClose}
+              PaperProps={{
+                style: {
+                  maxHeight: ITEM_HEIGHT * 4.5,
+                  width: '10ch',
+                },
+              }}
+            >
+              {option2.map((option) => (
+                <MenuItem key={option} onClick={() => handleFWClose(option)}>
+                  {option}
+                </MenuItem>
+              ))}
+            </Menu>
 
             {clickedMovies.length > 0 ? (
               <div className='mt-6 flex w-full flex-col items-center space-y-6'>
@@ -587,3 +647,47 @@ export const getServerSideProps = async (ctx: GetSessionParams | undefined) => {
     },
   };
 };
+
+//  <div
+//               className={
+//                 clickedWatchList
+//                   ? 'flex w-1/2 cursor-pointer items-center justify-center rounded-md bg-[#1F2933] p-2 text-white '
+//                   : 'flex w-1/2 cursor-pointer items-center justify-center rounded-md p-2 text-gray-400 hover:bg-[#1F2933] active:bg-[#132b35] '
+//               }
+//               onClick={handleWatchList}
+//             >
+//               Watchlist
+//             </div>
+//             <div
+//               className={
+//                 clickedFavorite
+//                   ? 'flex w-1/2 cursor-pointer items-center justify-center rounded-md bg-[#1F2933] p-2 text-white '
+//                   : 'flex w-1/2 cursor-pointer items-center  justify-center rounded-md p-2 text-gray-400 hover:bg-[#1F2933] active:bg-[#132b35] '
+//               }
+//               onClick={handleFav}
+//             >
+//               Favorite
+//             </div>
+
+//{
+/* <div
+                className={
+                  clickedWatchList
+                    ? 'flex w-1/2 cursor-pointer items-center justify-center rounded-md bg-[#1F2933] p-2 text-white '
+                    : 'flex w-1/2 cursor-pointer items-center justify-center rounded-md p-2 text-gray-400 hover:bg-[#1F2933] active:bg-[#132b35] '
+                }
+                onClick={handleWatchList}
+              >
+                Watchlist
+              </div>
+              <div
+                className={
+                  clickedFavorite
+                    ? 'flex w-1/2 cursor-pointer items-center justify-center rounded-md bg-[#1F2933] p-2 text-white '
+                    : 'flex w-1/2 cursor-pointer items-center  justify-center rounded-md p-2 text-gray-400 hover:bg-[#1F2933] active:bg-[#132b35] '
+                }
+                onClick={handleFav}
+              >
+                Favorite
+              </div> */
+// }

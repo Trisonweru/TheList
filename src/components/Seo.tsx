@@ -12,7 +12,7 @@ const defaultMeta = {
   description:
     'TheList is an application to help users to check movies and save them their watch list.',
   /** Without additional '/' on the end, e.g. https://theodorusclarence.com */
-  url: 'https://the-list-gules.vercel.app',
+  url: 'https://the-list-gray.vercel.app',
   type: 'website',
   robots: 'follow, index',
   /** No need to be filled, will be populated with openGraph function */

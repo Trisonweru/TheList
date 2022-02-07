@@ -29,8 +29,24 @@ export default function HomePage({ results, search, customLists }: any) {
   return (
     <Layout>
       <Seo templateTitle='TheList' />
-      <Header disp={true} />
-      <Search />
+      <div className="relative flex h-[500px] w-[100%]  flex-col items-center justify-center bg-[url('/images/hero.jpg')]">
+        <div className='flex h-full w-full flex-col  items-center justify-center bg-gradient-to-t from-[rgba(18,18,18)] to-[rgba(18,18,18,0.6)] '>
+          <div className='w-full'>
+            <Header disp={true} />
+          </div>
+          <div className='flex h-full w-full flex-1 flex-col items-center justify-center px-4 '>
+            <h1 className='max-w-3xl text-center text-3xl sm:text-5xl'>
+              <span className='text-[#3a84a3] '>Create </span> and{' '}
+              <span className='text-[#3a84a3] '>share</span> your{' '}
+              <span className='text-[#3a84a3] '>watchlists </span>
+              with your friends.{' '}
+              <span className='text-[#3a84a3] '>Keep record </span> of what you
+              watch.
+            </h1>
+            <Search />
+          </div>
+        </div>
+      </div>
       <Nav />
 
       <Results
@@ -51,16 +67,6 @@ export async function getServerSideProps(context: any) {
       request[genre]?.url || request.fetchTreding.url
     }`
   );
-
-  // const Capitalize = (mySentence: string) => {
-  //   const words = mySentence.split(' ');
-
-  //   for (let i = 0; i < words.length; i++) {
-  //     words[i] = words[i][0].toUpperCase() + words[i].substr(1);
-  //   }
-
-  //   return words.join(' ');
-  // };
   const searchedObj: any = [];
   const results = await requests.json();
   if (search) {

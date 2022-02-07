@@ -12,7 +12,7 @@ type props = {
 };
 function Header({ disp }: props) {
   return (
-    <header className='m-5 flex h-auto flex-col items-center justify-between sm:flex-row'>
+    <header className=' flex h-auto flex-col items-center justify-between pt-5 sm:flex-row'>
       <div className='flex max-w-2xl flex-grow justify-evenly'>
         <HeaderItem title='HOME' Icon={HomeIcon} url='/' />
         <HeaderItem
@@ -26,7 +26,7 @@ function Header({ disp }: props) {
         <HeaderItem title='ACCOUNT' Icon={UserIcon} url='/account' />
       </div>
       {disp && (
-        <div className='flex items-center'>
+        <div className='bg mr-4 flex items-center border py-0 px-2 shadow-md backdrop-blur-md backdrop-brightness-50 backdrop-grayscale backdrop-filter  '>
           <h1 className='text-gray-300'>TheList</h1>
         </div>
       )}

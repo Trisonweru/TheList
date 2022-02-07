@@ -38,7 +38,7 @@ function DataCard({ data, session, type, onDelete, onListDeleteItem }: props) {
   };
 
   const handleWatched = async () => {
-    const res = await fetcher('/api/watched', { data, session });
+    const res = await fetcher('/api/watched', { data, session, type });
     if (res.status === undefined) {
       setWcthd(true);
       router.reload();
@@ -74,9 +74,7 @@ function DataCard({ data, session, type, onDelete, onListDeleteItem }: props) {
           </div>
           <div
             className={
-              type === 'watchlist' ||
-              type === 'customlist' ||
-              type === 'favorite'
+              type === 'watchlist' || type === 'customlist'
                 ? 'flex w-full items-center justify-between'
                 : 'flex w-full items-center justify-end'
             }
@@ -94,19 +92,7 @@ function DataCard({ data, session, type, onDelete, onListDeleteItem }: props) {
                 Watched
               </button>
             )}
-            {type === 'favorite' && (
-              <button
-                disabled={wcthd ? true : false}
-                className={
-                  wcthd
-                    ? 'rounded-md bg-[#1F2933] px-6 py-1.5 text-[#316c85]'
-                    : 'rounded-md bg-[#316c85] px-6 py-1.5'
-                }
-                onClick={handleWatched}
-              >
-                Watched
-              </button>
-            )}
+
             {type === 'customlist' && (
               <button
                 disabled={wcthd ? true : false}
