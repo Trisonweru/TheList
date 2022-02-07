@@ -186,7 +186,9 @@ function Notification({
           className='absolute bottom-0 left-0 right-0 z-50 mb-4 mr-4 flex w-full justify-end shadow-md'
         >
           <div className='flex h-auto min-h-[50px] max-w-[50%] items-center justify-between bg-green-500 px-3 shadow-xl sm:max-w-[25%]'>
-            <p className='text-center'>Could not share the list!</p>
+            <p className='text-center'>
+              Could not share the list! User does not exist!
+            </p>
           </div>
         </motion.div>
       )}
