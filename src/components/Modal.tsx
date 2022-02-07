@@ -80,13 +80,13 @@ function Mod({ open, handleClose, data, customLists }: any) {
   const handleCloseCustomList = () => setCustomModal(false);
   return (
     <>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby='modal-modal-title'
-        aria-describedby='modal-modal-description'
-      >
-        <AnimatePresence>
+      <AnimatePresence>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby='modal-modal-title'
+          aria-describedby='modal-modal-description'
+        >
           <motion.div
             initial={{
               scale: 0,
@@ -282,8 +282,8 @@ function Mod({ open, handleClose, data, customLists }: any) {
               </div>
             </Box>
           </motion.div>
-        </AnimatePresence>
-      </Modal>
+        </Modal>
+      </AnimatePresence>
       <CustomModal
         open={customModal}
         onClose={handleCloseCustomList}

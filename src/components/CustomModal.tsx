@@ -49,13 +49,13 @@ function CustomModal({
   };
 
   return (
-    <Modal
-      open={open}
-      onClose={onClose}
-      aria-labelledby='modal-modal-title'
-      aria-describedby='modal-modal-description'
-    >
-      <AnimatePresence>
+    <AnimatePresence>
+      <Modal
+        open={open}
+        onClose={onClose}
+        aria-labelledby='modal-modal-title'
+        aria-describedby='modal-modal-description'
+      >
         <motion.div
           initial={{ y: '-100%', opacity: 0 }}
           animate={{ y: 0, translateY: '-50%', translateX: '-50%', opacity: 1 }}
@@ -109,8 +109,8 @@ function CustomModal({
             </div>
           </div>
         </motion.div>
-      </AnimatePresence>
-    </Modal>
+      </Modal>
+    </AnimatePresence>
   );
 }
 

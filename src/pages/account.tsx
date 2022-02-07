@@ -555,13 +555,13 @@ function Account({
         )}
       </div>
       <div>
-        <Modal
-          open={openModal}
-          onClose={handleModalClose}
-          aria-labelledby='modal-modal-title'
-          aria-describedby='modal-modal-description'
-        >
-          <AnimatePresence>
+        <AnimatePresence>
+          <Modal
+            open={openModal}
+            onClose={handleModalClose}
+            aria-labelledby='modal-modal-title'
+            aria-describedby='modal-modal-description'
+          >
             <motion.div
               initial={{
                 scale: 0,
@@ -631,8 +631,8 @@ function Account({
                 </div>
               </Box>
             </motion.div>
-          </AnimatePresence>
-        </Modal>
+          </Modal>
+        </AnimatePresence>
       </div>
     </>
   );
