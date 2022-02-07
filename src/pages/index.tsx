@@ -55,11 +55,15 @@ export default function HomePage({ results, search, customLists }: any) {
                 you watch.
               </motion.h1>
             </div>
+
             <Search />
           </div>
         </div>
       </div>
-      <Nav />
+      <div className='sticky top-0 left-0 z-50 flex h-10 items-center  overflow-x-scroll bg-[#121212] scrollbar-hide'>
+        {' '}
+        <Nav />
+      </div>
 
       <Results
         results={search.length > 0 ? search : results}

@@ -4,7 +4,7 @@ const Nav = () => {
   const router = useRouter();
   return (
     <nav className='relative'>
-      <div className='flex space-x-10  overflow-x-scroll whitespace-nowrap px-10 scrollbar-hide sm:space-x-20 sm:px-20'>
+      <div className=' flex space-x-10  overflow-x-scroll whitespace-nowrap px-10 scrollbar-hide sm:space-x-20 sm:px-20'>
         {Object.entries(request).map(([key, { title }], index) => {
           return (
             <h2
