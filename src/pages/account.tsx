@@ -139,6 +139,8 @@ function Account({
   const [to, setTo] = useState('');
   const [errorTo, setErrorTo] = useState(false);
   const [sameError, setSameError] = useState(false);
+  const [sharedSuccessful, setSharedSuccessful] = useState(false);
+  const [sharedError, setSharedError] = useState(false);
 
   const handleCreate = async () => {
     if (to !== '') {
@@ -152,6 +154,9 @@ function Account({
       if (res.id) {
         setTo('');
         handleModalClose();
+        setSharedSuccessful(true);
+      } else {
+        setSharedError(true);
       }
     } else {
       setErrorTo(true);
@@ -646,6 +651,8 @@ function Account({
         <Notification
           deletedListSuccess={deletedListSuccess}
           deletedListError={deletedListError}
+          sharedSuccessful={sharedSuccessful}
+          sharedError={sharedError}
         />
       </div>
       <Footer />

@@ -11,6 +11,8 @@ interface props {
   showSuccessC?: any;
   deletedListError?: boolean;
   deletedListSuccess?: boolean;
+  sharedSuccessful?: boolean;
+  sharedError?: boolean;
 }
 
 function Notification({
@@ -23,6 +25,8 @@ function Notification({
   showErrorwC,
   deletedListError,
   deletedListSuccess,
+  sharedError,
+  sharedSuccessful,
 }: props) {
   return (
     <AnimatePresence>
@@ -83,10 +87,26 @@ function Notification({
             duration: 1,
           }}
           exit={{ y: '100%', opacity: 0 }}
-          className='absolute bottom-0 left-0 right-0 z-50 mb-4 flex w-full justify-end shadow-md'
+          className='absolute bottom-0 left-0 right-0 z-50 mr-4 mb-4 flex w-full justify-end shadow-md'
         >
           <div className='flex h-auto min-h-[50px] max-w-[50%]  items-center  justify-between bg-green-500 px-3 shadow-xl sm:max-w-[25%]'>
             <p className='text-center'>List deleted succesfully!</p>
+          </div>
+        </motion.div>
+      )}
+      {sharedSuccessful && (
+        <motion.div
+          initial={{ y: '100%', opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            ease: 'easeOut',
+            duration: 1,
+          }}
+          exit={{ y: '100%', opacity: 0 }}
+          className='absolute bottom-0 left-0 right-0 z-50 mr-4 mb-4 flex w-full justify-end shadow-md'
+        >
+          <div className='flex h-auto min-h-[50px] max-w-[50%]  items-center  justify-between bg-green-500 px-3 shadow-xl sm:max-w-[25%]'>
+            <p className='text-center'>List shared succesfully!</p>
           </div>
         </motion.div>
       )}
@@ -147,10 +167,26 @@ function Notification({
             duration: 1,
           }}
           exit={{ y: '100%', opacity: 0 }}
-          className='absolute bottom-0 left-0 right-0 z-50 mb-4 flex w-full justify-end shadow-md'
+          className='absolute bottom-0 left-0 right-0 z-50 mb-4 mr-4 flex w-full justify-end shadow-md'
         >
           <div className='flex h-auto min-h-[50px] max-w-[50%] items-center justify-between bg-green-500 px-3 shadow-xl sm:max-w-[25%]'>
             <p className='text-center'>Could not delete the list!</p>
+          </div>
+        </motion.div>
+      )}
+      {sharedError && (
+        <motion.div
+          initial={{ y: '100%', opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            ease: 'easeOut',
+            duration: 1,
+          }}
+          exit={{ y: '100%', opacity: 0 }}
+          className='absolute bottom-0 left-0 right-0 z-50 mb-4 mr-4 flex w-full justify-end shadow-md'
+        >
+          <div className='flex h-auto min-h-[50px] max-w-[50%] items-center justify-between bg-green-500 px-3 shadow-xl sm:max-w-[25%]'>
+            <p className='text-center'>Could not share the list!</p>
           </div>
         </motion.div>
       )}
